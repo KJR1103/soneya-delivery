@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="fr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi Livraison GPS — Soneya Delivery</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#C9A45C',
+        'on-accent': '#102D22',
+        'success': '#176B4A',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#B91C1C',
+        'on-error': '#FFFFFF',
+        'courier': '#2563A6',
+        'on-courier': '#FFFFFF',
+        'partner': '#8A6A2D',
+        'on-partner': '#FFFFFF',
+        'light-primary': '#176B4A',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#EAF3EE',
+        'light-on-primary-container': '#102D22',
+        'light-surface': '#F5F7F5',
+        'light-on-surface': '#17231C',
+        'light-surface-container-low': '#FFFFFF',
+        'light-surface-container': '#EDF2EE',
+        'light-surface-variant': '#E4EAE5',
+        'light-on-surface-variant': '#4A5850',
+        'light-outline': '#C5D1C8',
+        'dark-primary': '#10B981',
+        'dark-on-primary': '#06281C',
+        'dark-primary-container': '#102D22',
+        'dark-on-primary-container': '#D1FAE5',
+        'dark-surface': '#08120D',
+        'dark-on-surface': '#F2F7F4',
+        'dark-surface-container-low': '#0D1B14',
+        'dark-surface-container': '#12261C',
+        'dark-surface-variant': '#1A3326',
+        'dark-on-surface-variant': '#A7C4B5',
+        'dark-outline': '#264234',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '12px',
+        'lg': '18px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Playfair"', 'sans-serif'],
+        'headline': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'title': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'body': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'label': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['48px', { lineHeight: '54px', letterSpacing: '-0.75px', fontWeight: '700' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg': ['26px', { lineHeight: '32px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'headline-md': ['20px', { lineHeight: '26px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['18px', { lineHeight: '24px', letterSpacing: '-0.15px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+        'mono-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '240ms',
+        'surface-exit': '160ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair:wght@700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Spline+Sans+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface font-body antialiased">
+  <div class="min-h-[884px] flex flex-col" data-stitch-vh="min-h-[884px]===min-h-screen">
+    <header class="sticky top-0 z-30 bg-light-surface-container-low/95 backdrop-blur-md border-b border-light-outline px-gutter-md py-gutter-md flex items-center justify-between">
+      <a href="#back" aria-label="Retour" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-light-surface-container text-light-on-surface">
+        <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_back</span>
+      </a>
+      <h1 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Suivi commande #SNY-8420</h1>
+      <span data-design-text-token="mono-sm" class="font-mono text-mono-sm text-light-primary">5 min</span>
+    </header>
+
+    <!-- Route Visual Header (Reference img_0414 Right) -->
+    <div class="relative h-64 bg-light-primary-container border-b border-light-outline flex flex-col items-center justify-center p-gutter-md">
+      <div class="w-full max-w-xs p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm flex items-center justify-between">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="material-symbols-outlined text-title-lg text-light-primary" aria-hidden="true">two_wheeler</span>
+          <div>
+            <p data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface">Kipé → Camayenne</p>
+            <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Route Le Prince · GPS actif</p>
+          </div>
+        </div>
+        <span data-design-text-token="mono-sm" class="font-mono text-mono-sm text-light-primary">1,4 km</span>
+      </div>
+    </div>
+
+    <main class="flex-1 px-gutter-md py-gutter-lg flex flex-col gap-gutter-lg">
+      <!-- Rider Card -->
+      <section class="p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-md">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-courier text-on-courier font-headline text-headline-md">IS</span>
+          <div>
+            <h2 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Ibrahima Sory</h2>
+            <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Rider Soneya · 4.9 ★</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Appeler le livreur" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-light-primary text-light-on-primary">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">call</span>
+        </button>
+      </section>
+
+      <!-- Step-by-Step Timeline -->
+      <section class="p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm flex flex-col gap-gutter-md">
+        <div class="flex items-center justify-between">
+          <h2 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Chronologie</h2>
+          <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-primary">5 min restantes</span>
+        </div>
+
+        <div class="flex items-center justify-between py-2 border-b border-light-outline">
+          <div class="flex items-center gap-gutter-sm">
+            <span class="material-symbols-outlined text-title-lg text-light-primary" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">check_circle</span>
+            <div>
+              <p data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Cuisine · Chez Fanta</p>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Commande préparée &amp; remise</p>
+            </div>
+          </div>
+          <span data-design-text-token="mono-sm" class="font-mono text-mono-sm text-light-on-surface-variant">18:02</span>
+        </div>
+
+        <div class="flex items-center justify-between py-2">
+          <div class="flex items-center gap-gutter-sm">
+            <span class="material-symbols-outlined text-title-lg text-courier" aria-hidden="true">two_wheeler</span>
+            <div>
+              <p data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Livraison en cours</p>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Arrivée prévue à Camayenne</p>
+            </div>
+          </div>
+          <span data-design-text-token="mono-sm" class="font-mono text-mono-sm text-light-primary">18:15</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+</body></html>

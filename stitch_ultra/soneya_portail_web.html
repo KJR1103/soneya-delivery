@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="fr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soneya Delivery Conakry — Portail Web</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#C9A45C',
+        'on-accent': '#102D22',
+        'success': '#176B4A',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#B91C1C',
+        'on-error': '#FFFFFF',
+        'courier': '#2563A6',
+        'on-courier': '#FFFFFF',
+        'partner': '#8A6A2D',
+        'on-partner': '#FFFFFF',
+        'light-primary': '#176B4A',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#EAF3EE',
+        'light-on-primary-container': '#102D22',
+        'light-surface': '#F5F7F5',
+        'light-on-surface': '#17231C',
+        'light-surface-container-low': '#FFFFFF',
+        'light-surface-container': '#EDF2EE',
+        'light-surface-variant': '#E4EAE5',
+        'light-on-surface-variant': '#4A5850',
+        'light-outline': '#C5D1C8',
+        'dark-primary': '#10B981',
+        'dark-on-primary': '#06281C',
+        'dark-primary-container': '#102D22',
+        'dark-on-primary-container': '#D1FAE5',
+        'dark-surface': '#08120D',
+        'dark-on-surface': '#F2F7F4',
+        'dark-surface-container-low': '#0D1B14',
+        'dark-surface-container': '#12261C',
+        'dark-surface-variant': '#1A3326',
+        'dark-on-surface-variant': '#A7C4B5',
+        'dark-outline': '#264234',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '12px',
+        'lg': '18px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Playfair"', 'sans-serif'],
+        'headline': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'title': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'body': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'label': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['48px', { lineHeight: '54px', letterSpacing: '-0.75px', fontWeight: '700' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg': ['26px', { lineHeight: '32px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'headline-md': ['20px', { lineHeight: '26px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['18px', { lineHeight: '24px', letterSpacing: '-0.15px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+        'mono-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '240ms',
+        'surface-exit': '160ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair:wght@700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Spline+Sans+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- Top Editorial Navigation -->
+    <header class="sticky top-0 z-30 bg-light-surface-container-low/95 dark:bg-dark-surface-container-low/95 backdrop-blur-md border-b border-light-outline dark:border-dark-outline">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <a href="#top" class="flex items-center gap-gutter-sm shrink-0">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">two_wheeler</span>
+          </span>
+          <div class="flex flex-col">
+            <span data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface dark:text-dark-on-surface whitespace-nowrap">Soneya</span>
+            <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-on-surface-variant dark:text-dark-on-surface-variant whitespace-nowrap">Conakry</span>
+          </div>
+        </a>
+
+        <nav aria-label="Navigation principale" class="hidden md:flex items-center gap-gutter-lg">
+          <a href="#espaces" class="font-label text-label-lg text-light-on-surface dark:text-dark-on-surface hover:text-light-primary dark:hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Espaces</span>
+          </a>
+          <a href="#services" class="font-label text-label-lg text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-primary dark:hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Services</span>
+          </a>
+          <a href="#paiement" class="font-label text-label-lg text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-primary dark:hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Mobile Money</span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-md shrink-0">
+          <a href="#connexion" class="hidden sm:inline-flex items-center font-label text-label-md text-light-on-surface dark:text-dark-on-surface hover:text-light-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-md">Connexion</span>
+          </a>
+          <!-- COMPONENT: button-primary -->
+          <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="button" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-2.5 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-md transition-colors duration-state-change ease-state-change hover:opacity-90 whitespace-nowrap">
+            <span data-design-text-token="label-md">Commander</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <!-- Hero Split Section -->
+      <section class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-xl md:py-section">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-center">
+          <div class="lg:col-span-6 flex flex-col gap-gutter-lg">
+            <div class="inline-flex items-center gap-gutter-xs self-start px-gutter-md py-1.5 rounded-full bg-light-primary-container dark:bg-dark-primary-container text-light-on-primary-container dark:text-dark-on-primary-container">
+              <span class="material-symbols-outlined text-label-md text-accent" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">verified</span>
+              <span data-design-text-token="label-md" class="font-label text-label-md">Plateforme n°1 à Conakry · GNF</span>
+            </div>
+
+            <h1 data-design-text-token="display-lg" class="font-display text-display-lg-mobile md:text-display-lg text-light-on-surface dark:text-dark-on-surface text-balance">
+              Tout Conakry livré avec précision et élégance.
+            </h1>
+
+            <p data-design-text-token="body-lg" class="font-body text-body-lg text-light-on-surface-variant dark:text-dark-on-surface-variant max-w-prose text-pretty">
+              Restaurants guinéens, courses Prima Center, pharmacies de garde et colis express de Kaloum à Lambanyi. Réglez instantanément via Orange Money, MTN MoMo ou à la livraison.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-gutter-md">
+              <!-- COMPONENT: button-with-icon -->
+              <button data-component-id="button-with-icon" data-component-type="button" data-component-variant="with-icon" type="button" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-lg transition-colors duration-state-change ease-state-change hover:opacity-90">
+                <span class="material-symbols-outlined text-title-md" aria-hidden="true">shopping_bag</span>
+                <span data-design-text-token="label-lg">Commander maintenant</span>
+              </button>
+
+              <!-- COMPONENT: button-secondary -->
+              <button data-component-id="button-secondary" data-component-type="button" data-component-variant="secondary" type="button" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-md bg-light-primary-container dark:bg-dark-primary-container text-light-on-primary-container dark:text-dark-on-primary-container border border-light-outline dark:border-dark-outline font-label text-label-lg transition-colors duration-state-change ease-state-change hover:bg-light-surface-variant">
+                <span data-design-text-token="label-lg">Devenir partenaire</span>
+              </button>
+            </div>
+
+            <!-- Trust Metrics -->
+            <div class="grid grid-cols-3 gap-gutter-md pt-gutter-md border-t border-light-outline dark:border-dark-outline">
+              <div class="flex flex-col gap-gutter-xs">
+                <span data-design-text-token="headline-md" class="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface tabular-nums">25 min</span>
+                <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Livraison moyenne</span>
+              </div>
+              <div class="flex flex-col gap-gutter-xs">
+                <span data-design-text-token="headline-md" class="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface tabular-nums">120+</span>
+                <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Enseignes vérifiées</span>
+              </div>
+              <div class="flex flex-col gap-gutter-xs">
+                <span data-design-text-token="headline-md" class="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface tabular-nums">5 zones</span>
+                <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Kaloum à Ratoma</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <div class="relative rounded-xl overflow-hidden border border-light-outline dark:border-dark-outline bg-light-surface-container-low dark:bg-dark-surface-container-low shadow-sm">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrDOVbyCG7iDk1IqvVsS3i9m3bqn_yDySv4ygE4Mo59SXzlDAQpJv_kquFGVRLcdpgs51hz7PdjG6t_2FS44qtBZQ9GRAscCnB0AC9XRcptw9UB4jijVXD_FtOn3n0yHcUzqeOeNFzla-4169GT5FD7wsqef3RfIjjFeuN7_Fbt3ysP5UgrVyL_rG0sALBcukd4SY3nKwn6DiesytRju-ZF6u6ENcATvEXWeqWntTnUc77gni6-34Kc4yDoCpFJLKg" alt="Plats gastronomiques guinéens prêts pour la livraison Soneya à Conakry" class="w-full h-80 md:h-96 object-cover">
+              <div class="p-gutter-lg bg-light-surface-container-low dark:bg-dark-surface-container-low flex items-center justify-between gap-gutter-md">
+                <div class="flex items-center gap-gutter-md">
+                  <span class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-light-primary-container dark:bg-dark-primary-container text-light-primary dark:text-dark-primary shrink-0">
+                    <span class="material-symbols-outlined text-title-lg" aria-hidden="true">payments</span>
+                  </span>
+                  <div>
+                    <p data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">Orange Money &amp; MoMo</p>
+                    <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Code <span class="font-mono text-mono-sm text-light-primary dark:text-dark-primary">SONEYA20</span> · -20%</p>
+                  </div>
+                </div>
+                <span data-design-text-token="mono-md" class="font-mono text-mono-md tabular-nums text-light-primary dark:text-dark-primary shrink-0">GNF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-Role Public Ecosystem Switcher (Admin is strictly internal) -->
+      <section id="espaces" class="bg-light-surface-container dark:bg-dark-surface-container border-y border-light-outline dark:border-dark-outline py-section">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg flex flex-col gap-gutter-xl">
+          <div class="flex flex-col gap-gutter-xs">
+            <h2 data-design-text-token="headline-lg" class="font-headline text-headline-lg text-light-on-surface dark:text-dark-on-surface">Choisissez votre espace Soneya</h2>
+            <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Sélectionnez votre profil pour créer votre compte et accéder à votre interface dédiée.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter-lg items-stretch">
+            <!-- Client Space -->
+            <!-- COMPONENT: card-interactive -->
+            <a href="#client" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-lg rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline transition-colors duration-state-change ease-state-change hover:border-light-primary dark:hover:border-dark-primary">
+              <div class="flex flex-col gap-gutter-md">
+                <div class="flex items-center justify-between">
+                  <span class="inline-flex items-center justify-center w-11 h-11 rounded-md bg-light-primary-container dark:bg-dark-primary-container text-light-primary dark:text-dark-primary">
+                    <span class="material-symbols-outlined text-title-lg" aria-hidden="true">shopping_bag</span>
+                  </span>
+                  <span class="material-symbols-outlined text-title-lg text-light-on-surface-variant" aria-hidden="true">arrow_forward</span>
+                </div>
+                <h3 data-design-text-token="title-lg" class="font-title text-title-lg text-light-on-surface dark:text-dark-on-surface">Espace Client</h3>
+                <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Commandez plats, courses et pharmacie avec remises, reçus PDF et suivi GPS.</p>
+              </div>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-light-primary dark:text-dark-primary">Créer un compte client</span>
+            </a>
+
+            <!-- Courier / Rider Space -->
+            <!-- COMPONENT: card-interactive -->
+            <a href="#courier" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-lg rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline transition-colors duration-state-change ease-state-change hover:border-courier">
+              <div class="flex flex-col gap-gutter-md">
+                <div class="flex items-center justify-between">
+                  <span class="inline-flex items-center justify-center w-11 h-11 rounded-md bg-light-surface-container dark:bg-dark-surface-container text-courier">
+                    <span class="material-symbols-outlined text-title-lg" aria-hidden="true">two_wheeler</span>
+                  </span>
+                  <span class="material-symbols-outlined text-title-lg text-light-on-surface-variant" aria-hidden="true">arrow_forward</span>
+                </div>
+                <h3 data-design-text-token="title-lg" class="font-title text-title-lg text-light-on-surface dark:text-dark-on-surface">Espace Livreur / Rider</h3>
+                <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Recevez des courses géolocalisées à Conakry et suivez vos gains en GNF.</p>
+              </div>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-courier">Rejoindre la flotte</span>
+            </a>
+
+            <!-- Business / Partner Space -->
+            <!-- COMPONENT: card-interactive -->
+            <a href="#partner" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-lg rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline transition-colors duration-state-change ease-state-change hover:border-partner">
+              <div class="flex flex-col gap-gutter-md">
+                <div class="flex items-center justify-between">
+                  <span class="inline-flex items-center justify-center w-11 h-11 rounded-md bg-light-surface-container dark:bg-dark-surface-container text-partner">
+                    <span class="material-symbols-outlined text-title-lg" aria-hidden="true">storefront</span>
+                  </span>
+                  <span class="material-symbols-outlined text-title-lg text-light-on-surface-variant" aria-hidden="true">arrow_forward</span>
+                </div>
+                <h3 data-design-text-token="title-lg" class="font-title text-title-lg text-light-on-surface dark:text-dark-on-surface">Espace Business</h3>
+                <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Tableau de bord complet, inventaire des ventes par jour, semaine, mois et année.</p>
+              </div>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-partner">Ouvrir mon espace pro</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Soneya Visual Identity Showcase -->
+      <section id="services" class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-section flex flex-col gap-gutter-xl">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter-md">
+          <div class="flex flex-col gap-gutter-xs">
+            <h2 data-design-text-token="headline-lg" class="font-headline text-headline-lg text-light-on-surface dark:text-dark-on-surface">L&#39;excellence locale au quotidien</h2>
+            <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Des tables guinéennes aux pharmacies de garde, chaque partenaire est sélectionné avec soin.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-lg">
+          <article class="rounded-lg overflow-hidden bg-light-surface-container-low border border-light-outline shadow-sm">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrDnokUuTLr-3l9vcS9ozchfhDN6Gj60eXrukGqR5Z-mzNSA3zDJTByndiDA7Q5ybD-i0wVlO-C4KMgwyD2LeZ9ETsDBfdBVGKKBImsgY2iV307XeXfk5CKow6YE1e8lP9f_TL2rlDWJUrTKucnFtqvrbv74fofuwi8qZF0G4_WShgtoHWlNnjuI2gmDWrlNhXOs1Mqp9pQc_101o2dWHw4HKsuoBx2EUIgy3Achl8tJmasKg8vdEcJF" alt="Restaurants guinéens" class="w-full h-48 object-cover">
+            <div class="p-gutter-md">
+              <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Gastronomie</h3>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Maffé Tiga, Riz Gras &amp; Grillades</p>
+            </div>
+          </article>
+          <article class="rounded-lg overflow-hidden bg-light-surface-container-low border border-light-outline shadow-sm">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBhaCNh70uK0jc5u-kBXh9XIB0WRHuiRvTLb5rUPUncyNKFZ-pjQnT46aFY3S2S-f3OfErBNhre8KjMDYFCYa-hhYp4G73OjRlaqm81gUmvewYLjmDZQbmlhbk3wfvmQQORfuX_j3ygS_fRXo6nSEPfMAmR34_5Qnr0xL_qRTJO_bONI_Kc4Z1idqNkRu6EBoIw0Ob_clI9oY6vD_fcCfp7XrgKdaEy2wR0R0CAAL4WcOtvmfoQMKKnBr3Y-w" alt="Courses et supermarchés" class="w-full h-48 object-cover">
+            <div class="p-gutter-md">
+              <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Courses fraîches</h3>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Prima Center &amp; marchés locaux</p>
+            </div>
+          </article>
+          <article class="rounded-lg overflow-hidden bg-light-surface-container-low border border-light-outline shadow-sm">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBFyhXQ7v5iIkmiNDuukstEd_SYcsyu4vE7P6dFoAXJ2MhHC6LtSi5cxwOvibTgF1anB_wjl82Zt-3z2xXkjRbKC3yOe0Nkl65axVjSd7a42qYok9a0NRVWpNBTAFO_Qq_rruef3ZJuOm_ld_cbWPKjulS2wrnNIRiOHmph9JXhpF7yp2L9fTB8log1VVg7L8aEEf8LTalW3MQOq9Lf5I7lzLrDLgG6dqseLCqtngYv9_gKI-LFVd4WqgM" alt="Pharmacies de garde" class="w-full h-48 object-cover">
+            <div class="p-gutter-md">
+              <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Santé 24h/24</h3>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Pharmacies de garde à Conakry</p>
+            </div>
+          </article>
+          <article class="rounded-lg overflow-hidden bg-light-surface-container-low border border-light-outline shadow-sm">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBugztqVmO4Fz5qSws9vIZ8GVKtXjhxOCsPIFPM8T0nm2nIKDkl0j1k86SE-kQhzcJC7eDcp_iIyoheky0QC20s3gSZcnFmSAspTvZRIo46vQcWJJf35PZodbMLOS6siFCeW8bSith4PQHPGHDovNIyI-lp-spdZElxpSpgeBspTxlKuJ9l2VFZqzGqkzKo1K5mjffFltmCWdlJUGbgQeNBj4E19-Wzkm728e_TG7xTKEQipjulLotS7H1DmAg" alt="Livraison express moto" class="w-full h-48 object-cover">
+            <div class="p-gutter-md">
+              <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Riders certifiés</h3>
+              <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Dossier KYC vérifié &amp; suivi GPS</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-light-surface-container-low dark:bg-dark-surface-container-low border-t border-light-outline dark:border-dark-outline py-gutter-lg">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg flex flex-col sm:flex-row items-center justify-between gap-gutter-md">
+        <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+          © 2026 Soneya Delivery Conakry. Tous droits réservés.
+        </p>
+        <div class="flex items-center gap-gutter-lg">
+          <a href="#confidentialite" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-primary">
+            <span data-design-text-token="label-md">Confidentialité</span>
+          </a>
+          <a href="#support" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-primary">
+            <span data-design-text-token="label-md">Support +224 622 00 00 00</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+
+</body></html>

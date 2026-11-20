@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="fr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil Client Web — Soneya Delivery</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#C9A45C',
+        'on-accent': '#102D22',
+        'success': '#176B4A',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#B91C1C',
+        'on-error': '#FFFFFF',
+        'courier': '#2563A6',
+        'on-courier': '#FFFFFF',
+        'partner': '#8A6A2D',
+        'on-partner': '#FFFFFF',
+        'light-primary': '#176B4A',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#EAF3EE',
+        'light-on-primary-container': '#102D22',
+        'light-surface': '#F5F7F5',
+        'light-on-surface': '#17231C',
+        'light-surface-container-low': '#FFFFFF',
+        'light-surface-container': '#EDF2EE',
+        'light-surface-variant': '#E4EAE5',
+        'light-on-surface-variant': '#4A5850',
+        'light-outline': '#C5D1C8',
+        'dark-primary': '#10B981',
+        'dark-on-primary': '#06281C',
+        'dark-primary-container': '#102D22',
+        'dark-on-primary-container': '#D1FAE5',
+        'dark-surface': '#08120D',
+        'dark-on-surface': '#F2F7F4',
+        'dark-surface-container-low': '#0D1B14',
+        'dark-surface-container': '#12261C',
+        'dark-surface-variant': '#1A3326',
+        'dark-on-surface-variant': '#A7C4B5',
+        'dark-outline': '#264234',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '12px',
+        'lg': '18px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Playfair"', 'sans-serif'],
+        'headline': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'title': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'body': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'label': ['"Plus Jakarta Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['48px', { lineHeight: '54px', letterSpacing: '-0.75px', fontWeight: '700' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-md-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg': ['26px', { lineHeight: '32px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'headline-md': ['20px', { lineHeight: '26px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['18px', { lineHeight: '24px', letterSpacing: '-0.15px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+        'mono-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '240ms',
+        'surface-exit': '160ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair:wght@700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Spline+Sans+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- Persistent Desktop App Shell Header -->
+    <header class="sticky top-0 z-30 bg-light-surface-container-low/95 dark:bg-dark-surface-container-low/95 backdrop-blur-md border-b border-light-outline dark:border-dark-outline">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-md shrink-0">
+          <a href="#home" class="flex items-center gap-gutter-sm">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary">
+              <span class="material-symbols-outlined text-title-lg" aria-hidden="true">two_wheeler</span>
+            </span>
+            <span data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface dark:text-dark-on-surface whitespace-nowrap">Soneya</span>
+          </a>
+
+          <!-- COMPONENT: chip-with-icon -->
+          <button data-component-id="chip-with-icon" data-component-type="chip" data-component-variant="with-icon" type="button" class="inline-flex items-center gap-gutter-xs px-3 py-1.5 rounded-full bg-light-surface-container dark:bg-dark-surface-container border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface font-label text-label-md transition-colors duration-state-change ease-state-change hover:border-light-primary whitespace-nowrap">
+            <span class="material-symbols-outlined text-title-md text-light-primary dark:text-dark-primary" aria-hidden="true">location_on</span>
+            <span data-design-text-token="label-md">Kipé</span>
+          </button>
+        </div>
+
+        <!-- COMPONENT: searchbar-standard -->
+        <form data-component-id="searchbar-standard" data-component-type="searchbar" data-component-variant="standard" role="search" class="hidden md:flex items-center gap-gutter-sm flex-1 max-w-md px-gutter-md py-2 rounded-full bg-light-surface-container dark:bg-dark-surface-container border border-light-outline dark:border-dark-outline focus-within:border-light-primary">
+          <span class="material-symbols-outlined text-title-lg text-light-on-surface-variant" aria-hidden="true">search</span>
+          <input type="search" aria-label="Rechercher un plat, restaurant ou pharmacie" placeholder="Maffé Tiga, Prima Center, pharmacie..." class="w-full bg-transparent border-0 p-0 font-body text-body-md text-light-on-surface placeholder:text-light-on-surface-variant focus:ring-0">
+        </form>
+
+        <nav aria-label="Navigation client" class="flex items-center gap-gutter-md shrink-0">
+          <a href="#orders" class="hidden lg:inline-flex items-center gap-gutter-xs font-label text-label-md text-light-on-surface-variant hover:text-light-primary">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">receipt_long</span>
+            <span data-design-text-token="label-md">Commandes</span>
+          </a>
+          <a href="#profile" class="hidden lg:inline-flex items-center gap-gutter-xs font-label text-label-md text-light-on-surface-variant hover:text-light-primary">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">person</span>
+            <span data-design-text-token="label-md">Mamadou D.</span>
+          </a>
+          <!-- COMPONENT: button-with-icon -->
+          <button data-component-id="button-with-icon" data-component-type="button" data-component-variant="with-icon" type="button" class="inline-flex items-center justify-center gap-gutter-xs px-gutter-md py-2.5 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-md transition-colors duration-state-change ease-state-change hover:opacity-90 whitespace-nowrap">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">shopping_bag</span>
+            <span data-design-text-token="label-md" class="tabular-nums">90 000 GNF</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-md md:px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+      <!-- Bento Top Row: Featured Editorial Offer + Express Parcel -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-stretch">
+        <div class="lg:col-span-8 rounded-xl overflow-hidden border border-light-outline dark:border-dark-outline bg-light-primary-container dark:bg-dark-primary-container grid grid-cols-1 md:grid-cols-12 items-center">
+          <div class="md:col-span-7 p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <span data-design-text-token="label-sm" class="inline-flex items-center gap-1 self-start px-3 py-1 rounded-full bg-light-primary text-light-on-primary font-label text-label-sm">
+              Offre Conakry · -20%
+            </span>
+            <h1 data-design-text-token="display-md" class="font-display text-display-md-mobile md:text-display-md text-light-on-primary-container dark:text-dark-on-primary-container text-balance">
+              Saveurs guinéennes livrées chaudes en 25 min.
+            </h1>
+            <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">
+              Utilisez le code <span class="font-mono text-mono-sm text-light-primary">SONEYA20</span> sur votre prochain Maffé Tiga ou Capitaine Braisé.
+            </p>
+            <div>
+              <!-- COMPONENT: button-primary -->
+              <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="button" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-md bg-light-primary text-light-on-primary font-label text-label-lg hover:opacity-90">
+                <span data-design-text-token="label-lg">Découvrir Chez Fanta</span>
+              </button>
+            </div>
+          </div>
+          <div class="md:col-span-5 h-full min-h-[240px]">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrDOVbyCG7iDk1IqvVsS3i9m3bqn_yDySv4ygE4Mo59SXzlDAQpJv_kquFGVRLcdpgs51hz7PdjG6t_2FS44qtBZQ9GRAscCnB0AC9XRcptw9UB4jijVXD_FtOn3n0yHcUzqeOeNFzla-4169GT5FD7wsqef3RfIjjFeuN7_Fbt3ysP5UgrVyL_rG0sALBcukd4SY3nKwn6DiesytRju-ZF6u6ENcATvEXWeqWntTnUc77gni6-34Kc4yDoCpFJLKg" alt="Cuisine guinéenne Soneya" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <!-- Express Parcel Card -->
+        <!-- COMPONENT: card-action -->
+        <article data-component-id="card-action" data-component-type="card" data-component-variant="action" class="lg:col-span-4 h-full flex flex-col justify-between gap-gutter-md p-gutter-lg rounded-xl bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm">
+          <div class="flex flex-col gap-gutter-md">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBRsOwm3aWjCy_15LJJcOlh6Jz6_tBNONkmhy9gD0Irtw3RR47qoAu8EGMN3FlEqczR3iJwLQx1JFOE160jTSmd7AJA0P04b0BtfB8IuMpel1OuH68eLz9B2RPJpJh96hf6rIAbkqphuCXEGiZjKmuz6MDVDMWZAe2dGBlJzswbL8pPN1bYqKPGjQ79cu1Pc7dL6BmwyEklVSCkSL0dakHXkmIK608KxkRyWTFhT5ncVtAI-MCyHRCpbykz3DE" alt="Coursier moto Soneya Express" class="w-full h-36 object-cover rounded-lg">
+            <div>
+              <h2 data-design-text-token="title-lg" class="font-title text-title-lg text-light-on-surface dark:text-dark-on-surface">Soneya Express Colis</h2>
+              <p data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant mt-1">
+                Envoyez un pli ou un colis entre Kaloum, Kipé et Lambanyi avec suivi GPS.
+              </p>
+            </div>
+          </div>
+          <footer class="flex items-center justify-between pt-gutter-sm border-t border-light-outline dark:border-dark-outline">
+            <span data-design-text-token="mono-sm" class="font-mono text-mono-sm tabular-nums text-light-on-surface-variant">Dès 15 000 GNF</span>
+            <button type="button" class="px-gutter-md py-2 rounded-md bg-light-primary text-light-on-primary font-label text-label-md hover:opacity-90">
+              <span data-design-text-token="label-md">Expédier un colis</span>
+            </button>
+          </footer>
+        </article>
+      </section>
+
+      <!-- Category Filter Row -->
+      <section class="flex flex-wrap items-center justify-between gap-gutter-md">
+        <div class="flex flex-wrap items-center gap-gutter-sm">
+          <!-- COMPONENT: chip-filter-active -->
+          <button data-component-id="chip-filter-active" data-component-type="chip" data-component-variant="filter" aria-pressed="true" type="button" class="inline-flex items-center gap-gutter-xs px-gutter-md py-2 rounded-full bg-light-primary text-light-on-primary font-label text-label-md">
+            <span data-design-text-token="label-md">Tout voir</span>
+          </button>
+          <!-- COMPONENT: chip-action -->
+          <button data-component-id="chip-action" data-component-type="chip" data-component-variant="action" type="button" class="inline-flex items-center gap-gutter-xs px-gutter-md py-2 rounded-full bg-light-surface-container-low border border-light-outline text-light-on-surface font-label text-label-md hover:bg-light-surface-container">
+            <span class="material-symbols-outlined text-title-md text-light-primary" aria-hidden="true">restaurant</span>
+            <span data-design-text-token="label-md">Restaurants</span>
+          </button>
+          <button data-component-id="chip-action" data-component-type="chip" data-component-variant="action" type="button" class="inline-flex items-center gap-gutter-xs px-gutter-md py-2 rounded-full bg-light-surface-container-low border border-light-outline text-light-on-surface font-label text-label-md hover:bg-light-surface-container">
+            <span class="material-symbols-outlined text-title-md text-light-primary" aria-hidden="true">shopping_cart</span>
+            <span data-design-text-token="label-md">Courses &amp; Marchés</span>
+          </button>
+          <button data-component-id="chip-action" data-component-type="chip" data-component-variant="action" type="button" class="inline-flex items-center gap-gutter-xs px-gutter-md py-2 rounded-full bg-light-surface-container-low border border-light-outline text-light-on-surface font-label text-label-md hover:bg-light-surface-container">
+            <span class="material-symbols-outlined text-title-md text-light-primary" aria-hidden="true">local_pharmacy</span>
+            <span data-design-text-token="label-md">Pharmacie</span>
+          </button>
+        </div>
+
+        <button type="button" class="inline-flex items-center gap-gutter-xs px-gutter-md py-2 rounded-full bg-light-surface-container-low border border-light-outline text-light-on-surface font-label text-label-md hover:bg-light-surface-container">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">tune</span>
+          <span data-design-text-token="label-md">Filtres</span>
+        </button>
+      </section>
+
+      <!-- Curated Conakry Partners Grid -->
+      <section class="flex flex-col gap-gutter-lg">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-sm">
+          <h2 data-design-text-token="headline-lg" class="font-headline text-headline-lg text-light-on-surface dark:text-dark-on-surface">Enseignes à Kipé &amp; Kaloum</h2>
+          <span data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface-variant whitespace-nowrap">4 ouvertes</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-lg items-stretch">
+          <!-- Partner 1 -->
+          <!-- COMPONENT: card-elevated -->
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm">
+            <div class="flex flex-col gap-gutter-md">
+              <div class="relative rounded-md overflow-hidden h-44">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrDnokUuTLr-3l9vcS9ozchfhDN6Gj60eXrukGqR5Z-mzNSA3zDJTByndiDA7Q5ybD-i0wVlO-C4KMgwyD2LeZ9ETsDBfdBVGKKBImsgY2iV307XeXfk5CKow6YE1e8lP9f_TL2rlDWJUrTKucnFtqvrbv74fofuwi8qZF0G4_WShgtoHWlNnjuI2gmDWrlNhXOs1Mqp9pQc_101o2dWHw4HKsuoBx2EUIgy3Achl8tJmasKg8vdEcJF" alt="Maffé Tiga Chez Fanta" class="w-full h-full object-cover">
+              </div>
+              <header class="flex items-start justify-between gap-gutter-sm">
+                <div>
+                  <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Chez Fanta</h3>
+                  <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Restaurant Guinéen · Kipé</p>
+                </div>
+                <span data-design-text-token="label-md" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-light-primary-container text-light-on-primary-container font-label text-label-md tabular-nums shrink-0">
+                  <span class="material-symbols-outlined text-label-md text-accent" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">star</span>
+                  4.9
+                </span>
+              </header>
+            </div>
+            <div class="flex items-center justify-between pt-gutter-sm border-t border-light-outline">
+              <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant tabular-nums">25 min · 25 000 GNF</span>
+              <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-primary">Alloco offert</span>
+            </div>
+          </article>
+
+          <!-- Partner 2 -->
+          <!-- COMPONENT: card-elevated -->
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm">
+            <div class="flex flex-col gap-gutter-md">
+              <div class="relative rounded-md overflow-hidden h-44">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrC9u_t06R_N_idPbs4c99rPK0gKz1APils_62_VEocNmFTX-Nxbx_uHREiR46ZjifhDVWK-9J2iEU6VpV0zWbfo1QQliTfeP1fWn5U5bMQUC1VnwOccq3kPSUq9HXZdThXXP-K9UphwNE1AdJqvwX_XIhYJf7vGnevBpJSJ8VrxzVxA2TzaKwgWzOnSvnxBLuByMwz-BX8c7iIzl90G8CKCWgo9GaxEYoMQbVRV973SYLjPA1vt8w6PnRRbnAjS-A" alt="Le Cèdre Grillades" class="w-full h-full object-cover">
+              </div>
+              <header class="flex items-start justify-between gap-gutter-sm">
+                <div>
+                  <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Le Cèdre Grillades</h3>
+                  <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Cuisine Libanaise · Kaloum</p>
+                </div>
+                <span data-design-text-token="label-md" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-light-primary-container text-light-on-primary-container font-label text-label-md tabular-nums shrink-0">
+                  <span class="material-symbols-outlined text-label-md text-accent" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">star</span>
+                  4.8
+                </span>
+              </header>
+            </div>
+            <div class="flex items-center justify-between pt-gutter-sm border-t border-light-outline">
+              <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant tabular-nums">30 min · 35 000 GNF</span>
+              <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-primary">Boisson offerte</span>
+            </div>
+          </article>
+
+          <!-- Partner 3 -->
+          <!-- COMPONENT: card-elevated -->
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm">
+            <div class="flex flex-col gap-gutter-md">
+              <div class="relative rounded-md overflow-hidden h-44">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrBhaCNh70uK0jc5u-kBXh9XIB0WRHuiRvTLb5rUPUncyNKFZ-pjQnT46aFY3S2S-f3OfErBNhre8KjMDYFCYa-hhYp4G73OjRlaqm81gUmvewYLjmDZQbmlhbk3wfvmQQORfuX_j3ygS_fRXo6nSEPfMAmR34_5Qnr0xL_qRTJO_bONI_Kc4Z1idqNkRu6EBoIw0Ob_clI9oY6vD_fcCfp7XrgKdaEy2wR0R0CAAL4WcOtvmfoQMKKnBr3Y-w" alt="Supermarché Prima Center" class="w-full h-full object-cover">
+              </div>
+              <header class="flex items-start justify-between gap-gutter-sm">
+                <div>
+                  <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Prima Center</h3>
+                  <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Supermarché · Kipé</p>
+                </div>
+                <span data-design-text-token="label-md" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-light-primary-container text-light-on-primary-container font-label text-label-md tabular-nums shrink-0">
+                  <span class="material-symbols-outlined text-label-md text-accent" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">star</span>
+                  4.7
+                </span>
+              </header>
+            </div>
+            <div class="flex items-center justify-between pt-gutter-sm border-t border-light-outline">
+              <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant tabular-nums">35 min · 50 000 GNF</span>
+              <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-primary">Livraison 0 GNF</span>
+            </div>
+          </article>
+
+          <!-- Partner 4 -->
+          <!-- COMPONENT: card-elevated -->
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="h-full flex flex-col justify-between gap-gutter-md p-gutter-md rounded-lg bg-light-surface-container-low border border-light-outline shadow-sm">
+            <div class="flex flex-col gap-gutter-md">
+              <div class="relative rounded-md overflow-hidden h-44">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrBFyhXQ7v5iIkmiNDuukstEd_SYcsyu4vE7P6dFoAXJ2MhHC6LtSi5cxwOvibTgF1anB_wjl82Zt-3z2xXkjRbKC3yOe0Nkl65axVjSd7a42qYok9a0NRVWpNBTAFO_Qq_rruef3ZJuOm_ld_cbWPKjulS2wrnNIRiOHmph9JXhpF7yp2L9fTB8log1VVg7L8aEEf8LTalW3MQOq9Lf5I7lzLrDLgG6dqseLCqtngYv9_gKI-LFVd4WqgM" alt="Pharmacie du Port Kaloum" class="w-full h-full object-cover">
+              </div>
+              <header class="flex items-start justify-between gap-gutter-sm">
+                <div>
+                  <h3 data-design-text-token="title-md" class="font-title text-title-md text-light-on-surface">Pharmacie du Port</h3>
+                  <p data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant">Pharmacie 24h · Kaloum</p>
+                </div>
+                <span data-design-text-token="label-md" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-light-primary-container text-light-on-primary-container font-label text-label-md tabular-nums shrink-0">
+                  <span class="material-symbols-outlined text-label-md text-accent" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">star</span>
+                  4.9
+                </span>
+              </header>
+            </div>
+            <div class="flex items-center justify-between pt-gutter-sm border-t border-light-outline">
+              <span data-design-text-token="body-sm" class="font-body text-body-sm text-light-on-surface-variant tabular-nums">20 min · 24h/24</span>
+              <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-primary">Ordonnance OK</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+</body></html>

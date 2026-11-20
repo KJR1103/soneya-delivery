@@ -1,0 +1,6 @@
+{
+  "name": "Soneya Delivery Conakry",
+  "description": "Application mobile de livraison tout-en-un à Conakry (Guinée) : Restaurants, Courses, Boutiques et Pharmacie avec paiement Orange Money & MTN MoMo en Francs Guinéens (GNF).",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
