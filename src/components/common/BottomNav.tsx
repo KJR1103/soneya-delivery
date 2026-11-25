@@ -1,6 +1,5 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { Home, Store, Search, Heart, User, ShoppingBag, MapPin } from 'lucide-react';
 
 export const BottomNav: React.FC = () => {
   const {
@@ -15,101 +14,111 @@ export const BottomNav: React.FC = () => {
   // BottomNav is tailored for the Client space mobile & tablet experience
   if (space !== 'client') return null;
 
-  const handleTabClick = (tab: 'home' | 'partners' | 'search' | 'favorites' | 'profile') => {
+  const handleTabClick = (tab: 'home' | 'partners' | 'search' | 'favorites' | 'profile' | 'orders') => {
     setSelectedPartnerId(null);
     setActiveTab(tab);
   };
 
-  const navItems = [
+  // stitch_ultra: 4-item bottom nav (Accueil, Commandes, Panier, Profil)
+  // Panier carries the cart badge; an ongoing delivery promotes Panier into a live Suivi indicator.
+  const navItems: Array<{
+    id: 'home' | 'orders' | 'profile';
+    label: string;
+    symbol: string;
+    onClick: () => void;
+  }> = [
     {
-      id: 'home' as const,
+      id: 'home',
       label: 'Accueil',
-      icon: <Home className="w-5 h-5" />,
+      symbol: 'home',
+      onClick: () => handleTabClick('home'),
     },
     {
-      id: 'partners' as const,
-      label: 'Partenaires',
-      icon: <Store className="w-5 h-5" />,
+      id: 'orders',
+      label: 'Commandes',
+      symbol: 'receipt_long',
+      onClick: () => handleTabClick('orders'),
     },
     {
-      id: 'search' as const,
-      label: 'Recherche',
-      icon: <Search className="w-5 h-5" />,
-    },
-    {
-      id: 'favorites' as const,
-      label: 'Favoris',
-      icon: <Heart className="w-5 h-5" />,
-    },
-    {
-      id: 'profile' as const,
+      id: 'profile',
       label: 'Profil',
-      icon: <User className="w-5 h-5" />,
+      symbol: 'person',
+      onClick: () => handleTabClick('profile'),
     },
   ];
 
+  const hasLiveOrder = !!activeOrder && activeOrder.status !== 'delivered';
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 px-2 sm:px-4 pb-safe pt-1 pointer-events-none lg:hidden">
-      <div className="max-w-lg mx-auto w-full pointer-events-auto mb-1.5 sm:mb-2">
-        <div className="bg-white/95 dark:bg-[#0B1E15]/95 backdrop-blur-lg border border-[#E2ECE7] dark:border-emerald-900/60 rounded-2xl shadow-xl px-1.5 sm:px-3 py-1.5 flex items-center justify-between gap-0.5">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none lg:hidden">
+      <div className="bg-light-surface-container-low/95 dark:bg-dark-surface-container-low/95 backdrop-blur-md border-t border-light-outline dark:border-dark-outline">
+        <div className="max-w-lg mx-auto w-full px-gutter-md pt-gutter-xs pb-safe flex items-stretch justify-between">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => handleTabClick(item.id)}
-                className={`relative flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-xl transition-all cursor-pointer min-h-[44px] ${
+                onClick={item.onClick}
+                className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 py-gutter-xs px-gutter-xs transition-all cursor-pointer min-h-[48px] ${
                   isActive
-                    ? 'text-[#0B7A4B] dark:text-[#10B981] font-bold bg-emerald-50/70 dark:bg-emerald-950/40'
-                    : 'text-[#2F4F42] dark:text-emerald-200/70 hover:text-[#0B7A4B] dark:hover:text-white'
+                    ? 'text-light-primary dark:text-dark-primary'
+                    : 'text-light-on-surface-variant dark:text-dark-on-surface-variant'
                 }`}
+                aria-current={isActive ? 'page' : undefined}
               >
-                <div className="relative shrink-0">
-                  {item.icon}
-                </div>
-                <span className="text-[10px] tracking-tight truncate max-w-full">{item.label}</span>
-                {isActive && (
-                  <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#0B7A4B] dark:bg-[#10B981]" />
-                )}
+                <span
+                  className="material-symbols-outlined text-title-lg"
+                  aria-hidden="true"
+                  style={
+                    isActive
+                      ? { fontVariationSettings: "'FILL' 1" }
+                      : undefined
+                  }
+                >
+                  {item.symbol}
+                </span>
+                <span className="font-label text-label-sm tracking-tight truncate max-w-full">
+                  {item.label}
+                </span>
               </button>
             );
           })}
 
-          {/* Cart quick access icon with badge if items present */}
-          {cartCount > 0 && (
-            <button
-              onClick={() => setActiveTab('orders')}
-              className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-xl transition-all relative min-h-[44px] cursor-pointer ${
-                activeTab === 'orders'
-                  ? 'text-[#0B7A4B] dark:text-[#10B981] font-bold bg-emerald-50/70 dark:bg-emerald-950/40'
-                  : 'text-[#0B2B1E] dark:text-emerald-100'
-              }`}
-              title="Voir mon panier"
-            >
-              <div className="relative">
-                <ShoppingBag className="w-5 h-5" />
-                <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 rounded-full bg-[#0B7A4B] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-[#0B1E15]">
+          {/* Panier — always present, carries cart badge and/or live delivery pulse */}
+          <button
+            onClick={() => handleTabClick('orders')}
+            className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 py-gutter-xs px-gutter-xs transition-all relative min-h-[48px] cursor-pointer ${
+              activeTab === 'orders'
+                ? 'text-light-primary dark:text-dark-primary'
+                : 'text-light-on-surface-variant dark:text-dark-on-surface-variant'
+            }`}
+            title={hasLiveOrder ? 'Suivi de livraison en direct' : 'Voir mon panier'}
+          >
+            <div className="relative">
+              <span
+                className="material-symbols-outlined text-title-lg"
+                aria-hidden="true"
+                style={
+                  activeTab === 'orders'
+                    ? { fontVariationSettings: "'FILL' 1" }
+                    : undefined
+                }
+              >
+                {hasLiveOrder ? 'location_on' : 'shopping_bag'}
+              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-4 h-4 px-1 rounded-full bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary text-label-sm font-bold flex items-center justify-center ring-2 ring-light-surface-container-low dark:ring-dark-surface-container-low">
                   {cartCount}
                 </span>
-              </div>
-              <span className="text-[10px] tracking-tight truncate max-w-full">Panier</span>
-            </button>
-          )}
-
-          {/* Ongoing live delivery order tracking shortcut */}
-          {activeOrder && activeOrder.status !== 'delivered' && cartCount === 0 && (
-            <button
-              onClick={() => setActiveTab('orders')}
-              className="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-xl text-[#0B7A4B] dark:text-[#10B981] font-bold relative min-h-[44px] cursor-pointer"
-              title="Suivi de livraison en direct"
-            >
-              <div className="relative">
-                <MapPin className="w-5 h-5 text-[#0B7A4B] dark:text-[#10B981]" />
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0B1E15] animate-pulse" />
-              </div>
-              <span className="text-[9px] font-bold uppercase tracking-wider truncate max-w-full">Suivi</span>
-            </button>
-          )}
+              )}
+              {hasLiveOrder && cartCount === 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-light-primary dark:bg-dark-primary ring-2 ring-light-surface-container-low dark:ring-dark-surface-container-low animate-pulse" />
+              )}
+            </div>
+            <span className="font-label text-label-sm tracking-tight truncate max-w-full">
+              {hasLiveOrder ? 'Suivi' : 'Panier'}
+            </span>
+          </button>
         </div>
       </div>
     </nav>

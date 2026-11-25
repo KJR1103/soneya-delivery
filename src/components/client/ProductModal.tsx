@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Partner, Product, ProductOption } from '../../types';
 import { formatGnf } from '../../utils/formatters';
 import { useApp } from '../../context/AppContext';
-import { X, Plus, Minus, Heart, Check, Clock, ShieldCheck, Box } from 'lucide-react';
 
 interface ProductModalProps {
   product: Product | null;
@@ -77,238 +76,204 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, partner, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[#0B2B1E]/60 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-md max-h-[90dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-white dark:bg-[#0C1913] shadow-2xl border border-[#E2ECE7] dark:border-[#1E3B2D] overflow-hidden">
-        {/* Top Header with Circular/Rounded Dish Presentation */}
-        <div className="relative pt-6 pb-4 px-6 bg-white dark:bg-[#0C1913] border-b border-[#E2ECE7] dark:border-[#1E3B2D] shrink-0 flex flex-col items-center">
-          {/* Top navigation row: Close button on left, Heart favorite on right */}
-          <div className="w-full flex items-center justify-between absolute top-4 left-0 right-0 px-4">
-            <button
-              onClick={onClose}
-              className="w-10 h-10 rounded-full bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-white flex items-center justify-center hover:bg-emerald-50 dark:hover:bg-[#13291F] transition cursor-pointer shadow-xs"
-              aria-label="Fermer"
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-light-on-surface/60 backdrop-blur-xs p-0 sm:p-gutter-md animate-in fade-in duration-200">
+      <div className="w-full max-w-md max-h-[90dvh] flex flex-col rounded-t-xl sm:rounded-xl bg-light-surface-container-low dark:bg-dark-surface-container-low shadow-2xl border border-light-outline dark:border-dark-outline overflow-hidden">
+        {/* Contextual Header: back button, partner name, cart/favorite */}
+        <header className="px-gutter-md py-gutter-md flex items-center justify-between shrink-0 border-b border-light-outline dark:border-dark-outline">
+          <button
+            onClick={onClose}
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer"
+            aria-label="Retour"
+          >
+            <span className="material-symbols-outlined text-title-md" aria-hidden="true">arrow_back</span>
+          </button>
+          <span className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface truncate px-gutter-sm">
+            {partner.name}
+          </span>
+          <button
+            onClick={() => toggleFavorite(product.id)}
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer"
+            aria-label="Ajouter aux favoris"
+          >
+            <span
+              className="material-symbols-outlined text-title-md"
+              style={isFavorite ? { fontVariationSettings: "'FILL' 1", color: '#E11D48' } : undefined}
+              aria-hidden="true"
             >
-              <X className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => toggleFavorite(product.id)}
-              className="w-10 h-10 rounded-full bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-white flex items-center justify-center hover:bg-emerald-50 dark:hover:bg-[#13291F] transition cursor-pointer shadow-xs"
-              aria-label="Ajouter aux favoris"
-            >
-              <Heart
-                className={`w-4 h-4 transition ${
-                  isFavorite ? 'fill-[#E11D48] text-[#E11D48]' : 'text-[#5C7A6E]'
-                }`}
-              />
-            </button>
-          </div>
+              {isFavorite ? 'favorite' : 'favorite'}
+            </span>
+          </button>
+        </header>
 
-          {/* Centered Dish Circular Hero Image */}
-          <div className="mt-3 relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden ring-4 ring-white dark:ring-[#1E3B2D] shadow-xl bg-white dark:bg-[#10231B]">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {product.prepTimeMin && (
-            <div className="mt-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#2F4F42] dark:text-emerald-100 text-[11px] font-semibold">
-              <Clock className="w-3.5 h-3.5 text-[#0B7A4B] dark:text-[#10B981]" />
-              <span>Préparation estimée : ~{product.prepTimeMin} min</span>
+        <div className="flex-1 overflow-y-auto">
+          <main className="px-gutter-md pb-gutter-xl flex flex-col gap-gutter-lg">
+            {/* Centered Dish Photo & Stepper */}
+            <div className="flex flex-col items-center gap-gutter-md pt-gutter-lg">
+              <div className="w-56 h-56 rounded-full overflow-hidden border-4 border-light-surface-container-low dark:border-dark-surface-container-low shadow-sm">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* Quantity stepper */}
+              <div className="inline-flex items-center gap-gutter-md px-gutter-md py-1.5 rounded-full bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                  className="w-7 h-7 rounded-full bg-light-surface-container dark:bg-dark-surface-container text-light-on-surface dark:text-dark-on-surface font-label text-label-lg flex items-center justify-center transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer disabled:opacity-30"
+                  aria-label="Diminuer la quantité"
+                >
+                  <span className="material-symbols-outlined text-label-md" aria-hidden="true">remove</span>
+                </button>
+                <span className="font-mono text-mono-md text-light-on-surface dark:text-dark-on-surface tabular-nums">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-7 h-7 rounded-full bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-lg flex items-center justify-center transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer"
+                  aria-label="Augmenter la quantité"
+                >
+                  <span className="material-symbols-outlined text-label-md" aria-hidden="true">add</span>
+                </button>
+              </div>
             </div>
-          )}
-        </div>
 
-        {/* Content Body: Title, Description, Options, Add-ons, Package */}
-        <div className="p-4 sm:p-5 overflow-y-auto space-y-5 flex-1 divide-y divide-[#E2ECE7] dark:divide-[#1E3B2D]">
-          {/* Dish Title & Price */}
-          <div className="pt-0">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <h3 className="font-heading font-black text-xl text-[#0B2B1E] dark:text-white leading-tight">
+            {/* Title, Price & Metadata */}
+            <section className="flex flex-col gap-gutter-sm">
+              <div className="flex items-start justify-between gap-gutter-md">
+                <h1 className="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface">
                   {product.name}
-                </h3>
-                <p className="mt-1 text-xs text-[#2F4F42] dark:text-emerald-200/70">
-                  Préparé avec soin par {partner.name} · {partner.quartierName}
-                </p>
-              </div>
-              <div className="text-right shrink-0">
-                <div className="font-heading font-black text-lg text-[#0B7A4B] dark:text-[#10B981]">
+                </h1>
+                <span className="font-mono text-headline-md text-light-primary dark:text-dark-primary tabular-nums shrink-0">
                   {formatGnf(product.priceGnf)}
-                </div>
-                <div className="text-[11px] text-[#5C7A6E] line-through">
-                  {formatGnf(Math.round(product.priceGnf * 1.15))}
-                </div>
+                </span>
               </div>
-            </div>
-            <p className="mt-3 text-xs text-[#2F4F42] dark:text-emerald-100/80 leading-relaxed">
-              {product.description}
-            </p>
-          </div>
 
-          {/* Product Mandatory Options if available */}
-          {product.options && product.options.length > 0 && (
-            <div className="pt-4 space-y-2.5">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#2F4F42] dark:text-emerald-200/70">
-                Format / Taille
-              </label>
-              <div className="space-y-1.5">
-                {product.options.map((opt) => {
-                  const isSelected = selectedOption?.name === opt.name;
+              <div className="flex items-center gap-gutter-md text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                <span className="inline-flex items-center gap-1">
+                  <span className="material-symbols-outlined text-label-md text-accent" style={{ fontVariationSettings: "'FILL' 1" }} aria-hidden="true">star</span>
+                  4.9
+                </span>
+                {product.prepTimeMin && <span>{product.prepTimeMin} min prép.</span>}
+                <span>{partner.quartierName} · Halal</span>
+              </div>
+
+              <p className="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant text-pretty">
+                {product.description}
+              </p>
+            </section>
+
+            {/* Options Selector */}
+            {product.options && product.options.length > 0 && (
+              <section className="flex flex-col gap-gutter-sm">
+                <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+                  Format / Taille
+                </h2>
+                <div className="flex flex-wrap gap-gutter-sm">
+                  {product.options.map((opt) => {
+                    const isSelected = selectedOption?.name === opt.name;
+                    return (
+                      <button
+                        key={opt.name}
+                        type="button"
+                        onClick={() => setSelectedOption(opt)}
+                        className={`px-gutter-md py-2 rounded-md font-label text-label-md transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer ${
+                          isSelected
+                            ? 'bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary'
+                            : 'bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface'
+                        }`}
+                      >
+                        {opt.name}
+                        {opt.priceModifierGnf > 0 && (
+                          <span className="ml-1">(+{formatGnf(opt.priceModifierGnf)})</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* Add-ons / Suppléments */}
+            <section className="flex flex-col gap-gutter-sm">
+              <div className="flex items-center justify-between">
+                <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+                  Ajouter plus / Suppléments
+                </h2>
+                <span className="font-label text-label-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Facultatif</span>
+              </div>
+              <div className="flex flex-wrap gap-gutter-sm">
+                {DEFAULT_ADDONS.map((addon) => {
+                  const isChecked = selectedAddons.includes(addon.id);
                   return (
                     <button
-                      key={opt.name}
-                      onClick={() => setSelectedOption(opt)}
-                      className={`w-full min-h-[44px] flex items-center justify-between p-3 rounded-xl border text-xs transition cursor-pointer ${
-                        isSelected
-                          ? 'border-[#0B7A4B] bg-[#0B7A4B]/5 dark:bg-[#0B7A4B]/20 text-[#0B7A4B] dark:text-white font-bold'
-                          : 'border-[#E2ECE7] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-emerald-100 hover:bg-emerald-50/50 dark:hover:bg-[#13291F]'
+                      key={addon.id}
+                      type="button"
+                      onClick={() => toggleAddon(addon.id)}
+                      className={`px-gutter-md py-2 rounded-md font-label text-label-md transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer ${
+                        isChecked
+                          ? 'bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary'
+                          : 'bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface'
                       }`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                            isSelected
-                              ? 'border-[#0B7A4B] bg-[#0B7A4B] text-white'
-                              : 'border-[#D4E9DD] dark:border-[#1E3B2D]'
-                          }`}
-                        >
-                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-                        </div>
-                        <span>{opt.name}</span>
-                      </div>
-                      {opt.priceModifierGnf > 0 && (
-                        <span className="text-[11px] font-semibold text-[#2F4F42] dark:text-emerald-200/70">
-                          +{formatGnf(opt.priceModifierGnf)}
-                        </span>
-                      )}
+                      {addon.name} (+{formatGnf(addon.priceGnf)})
                     </button>
                   );
                 })}
               </div>
-            </div>
-          )}
+            </section>
 
-          {/* Add more / Suppléments */}
-          <div className="pt-4 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#2F4F42] dark:text-emerald-200/70">
-                Ajouter plus / Suppléments
-              </label>
-              <span className="text-[10px] text-[#5C7A6E]">Facultatif</span>
-            </div>
+            {/* Package / Emballage */}
+            <section className="flex flex-col gap-gutter-sm">
+              <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+                Conditionnement & Emballage
+              </h2>
+              <button
+                type="button"
+                onClick={() => setIncludePackageBox(!includePackageBox)}
+                className={`px-gutter-md py-2 rounded-md font-label text-label-md transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer inline-flex items-center gap-gutter-xs ${
+                  includePackageBox
+                    ? 'bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary'
+                    : 'bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface'
+                }`}
+              >
+                <span className="material-symbols-outlined text-title-md" aria-hidden="true">inventory_2</span>
+                <span>Boîte isotherme (+{formatGnf(1000)})</span>
+              </button>
+            </section>
 
-            <div className="space-y-1.5">
-              {DEFAULT_ADDONS.map((addon) => {
-                const isChecked = selectedAddons.includes(addon.id);
-                return (
-                  <button
-                    key={addon.id}
-                    type="button"
-                    onClick={() => toggleAddon(addon.id)}
-                    className={`w-full min-h-[44px] flex items-center justify-between p-3 rounded-xl border text-xs transition cursor-pointer ${
-                      isChecked
-                        ? 'border-[#0B7A4B] bg-[#0B7A4B]/5 dark:bg-[#0B7A4B]/20 text-[#0B2B1E] dark:text-white font-bold'
-                        : 'border-[#E2ECE7] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-emerald-100 hover:bg-emerald-50/50 dark:hover:bg-[#13291F]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div
-                        className={`w-4 h-4 rounded-md border flex items-center justify-center ${
-                          isChecked
-                            ? 'border-[#0B7A4B] bg-[#0B7A4B] text-white'
-                            : 'border-[#D4E9DD] dark:border-[#1E3B2D]'
-                        }`}
-                      >
-                        {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
-                      </div>
-                      <span>{addon.name}</span>
-                    </div>
-                    <span className="text-[11px] font-semibold text-[#2F4F42] dark:text-emerald-200/70">
-                      +{formatGnf(addon.priceGnf)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Package / Emballage */}
-          <div className="pt-4 space-y-2.5">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-[#2F4F42] dark:text-emerald-200/70">
-              Conditionnement & Emballage
-            </label>
-            <button
-              type="button"
-              onClick={() => setIncludePackageBox(!includePackageBox)}
-              className={`w-full min-h-[44px] flex items-center justify-between p-3 rounded-xl border text-xs transition cursor-pointer ${
-                includePackageBox
-                  ? 'border-[#0B7A4B] bg-emerald-50/50 dark:bg-[#10231B] text-[#0B2B1E] dark:text-white font-bold'
-                  : 'border-[#E2ECE7] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-emerald-100 hover:bg-emerald-50/50'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <Box className="w-4 h-4 text-[#0B7A4B]" />
-                <span>Boîte & emballage isotherme garanti</span>
-              </div>
-              <span className="text-[11px] font-semibold text-[#2F4F42] dark:text-emerald-200/70">
-                +1 000 GNF
-              </span>
-            </button>
-          </div>
-
-          {/* Special Instructions */}
-          <div className="pt-4 space-y-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-[#2F4F42] dark:text-emerald-200/70">
-              Remarques spécifiques
-            </label>
-            <input
-              type="text"
-              placeholder="Ex: Sauce à part, sans oignons, bien cuit..."
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] focus:outline-none focus:border-[#0B7A4B] text-[#0B2B1E] dark:text-white placeholder-[#5C7A6E]"
-            />
-          </div>
+            {/* Special Instructions */}
+            <section className="flex flex-col gap-gutter-sm">
+              <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+                Remarques spécifiques
+              </h2>
+              <input
+                type="text"
+                placeholder="Ex: Sauce à part, sans oignons, bien cuit..."
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+                className="w-full px-gutter-md py-2.5 rounded-md bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline focus:outline-none focus:border-light-primary dark:focus:border-dark-primary font-body text-body-md text-light-on-surface dark:text-dark-on-surface placeholder:text-light-on-surface-variant dark:placeholder:text-dark-on-surface-variant"
+              />
+            </section>
+          </main>
         </div>
 
-        {/* Sticky Footer: Quantity Stepper and Wide CTA */}
-        <div className="p-4 border-t border-[#E2ECE7] dark:border-[#1E3B2D] bg-white dark:bg-[#0C1913] flex items-center gap-2.5 sm:gap-3 shrink-0">
-          {/* Stepper - 1 + */}
-          <div className="flex items-center bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] rounded-xl p-1 shadow-xs shrink-0">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              disabled={quantity <= 1}
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-[#0B2B1E] dark:text-white hover:bg-emerald-50 dark:hover:bg-[#13291F] disabled:opacity-30 cursor-pointer"
-              aria-label="Diminuer la quantité"
-            >
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-            <span className="w-7 text-center font-bold text-xs text-[#0B2B1E] dark:text-white font-mono">
-              {quantity}
-            </span>
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-[#0B2B1E] dark:text-white hover:bg-emerald-50 dark:hover:bg-[#13291F] cursor-pointer"
-              aria-label="Augmenter la quantité"
-            >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Wide CTA: Add to order [Price] */}
+        {/* Add to cart button */}
+        <div className="px-gutter-md py-gutter-md border-t border-light-outline dark:border-dark-outline bg-light-surface-container-low dark:bg-dark-surface-container-low shrink-0">
           <button
             onClick={handleAdd}
-            className={`flex-1 min-h-[46px] flex items-center justify-between gap-2 px-4 sm:px-5 py-3 rounded-xl font-heading font-bold text-xs shadow-md shadow-[#0B7A4B]/20 transition-all cursor-pointer ${
+            className={`w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3.5 rounded-md font-label text-label-lg transition-colors duration-state-change ease-state-change hover:opacity-90 cursor-pointer ${
               addedAnimation
-                ? 'bg-[#0B2B1E] text-white scale-[0.98]'
-                : 'bg-[#0B7A4B] hover:bg-[#08613B] text-white active:scale-95'
+                ? 'bg-light-on-surface text-light-surface-container-low dark:bg-dark-on-surface dark:text-dark-surface-container-low scale-[0.98]'
+                : 'bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary active:scale-95'
             }`}
           >
-            <span className="truncate">{addedAnimation ? 'Ajouté !' : 'Ajouter à la commande'}</span>
-            <span className="font-heading font-black text-xs sm:text-sm shrink-0">
-              {formatGnf(totalPrice)}
+            <span className="truncate">{addedAnimation ? 'Ajouté !' : 'Ajouter au panier'}</span>
+            <span className="font-mono text-label-lg shrink-0 tabular-nums">
+              · {formatGnf(totalPrice)}
             </span>
           </button>
         </div>
