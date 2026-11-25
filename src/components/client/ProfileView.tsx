@@ -21,7 +21,6 @@ import {
   Check,
 } from 'lucide-react';
 import { SavedAddress } from '../../types';
-import { SettingsView } from '../common/SettingsView';
 
 export const ProfileView: React.FC = () => {
   const {
@@ -439,8 +438,60 @@ export const ProfileView: React.FC = () => {
                   )}
 
                   {item.id === 'settings' && (
-                    <div className="pt-2">
-                      <SettingsView />
+                    <div className="space-y-3 text-xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <div className="font-bold text-[#0B2B1E] dark:text-white">
+                            Alertes SMS de suivi
+                          </div>
+                          <div className="text-[10px] text-[#5C7A6E] dark:text-emerald-200/70">
+                            Mises à jour motard même sans connexion internet
+                          </div>
+                        </div>
+                        <button
+                          onClick={() =>
+                            updateUser({ smsNotifications: !user?.smsNotifications })
+                          }
+                          className={`w-11 h-6 rounded-full transition-colors flex items-center p-0.5 cursor-pointer shrink-0 ${
+                            user?.smsNotifications
+                              ? 'bg-[#0B7A4B]'
+                              : 'bg-[#D4E9DD] dark:bg-[#1E3B2D]'
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-full bg-white transition-transform shadow-xs ${
+                              user?.smsNotifications ? 'translate-x-5' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#E2ECE7] dark:border-[#1E3B2D]">
+                        <div>
+                          <div className="font-bold text-[#0B2B1E] dark:text-white">
+                            Reçu par e-mail automatique
+                          </div>
+                          <div className="text-[10px] text-[#5C7A6E] dark:text-emerald-200/70">
+                            Facture PDF envoyée après livraison
+                          </div>
+                        </div>
+                        <button
+                          onClick={() =>
+                            updateUser({ emailReceipts: !user?.emailReceipts })
+                          }
+                          className={`w-11 h-6 rounded-full transition-colors flex items-center p-0.5 cursor-pointer shrink-0 ${
+                            user?.emailReceipts
+                              ? 'bg-[#0B7A4B]'
+                              : 'bg-[#D4E9DD] dark:bg-[#1E3B2D]'
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-full bg-white transition-transform shadow-xs ${
+                              user?.emailReceipts ? 'translate-x-5' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
                     </div>
                   )}
 

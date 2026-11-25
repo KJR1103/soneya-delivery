@@ -1,95 +1,91 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { SpaceType } from '../../types';
+import { ShoppingBag, Bike, Store, ShieldCheck, Home } from 'lucide-react';
 
 export const SpaceSwitcher: React.FC = () => {
   const { space, setSpace, user, setShowLandingPortal } = useApp();
 
-  const goToPortal = () => {
-    window.history.pushState({}, '', '/');
-    setShowLandingPortal(true);
-  };
+  // If user is logged in with a non-admin role, they ONLY see their dedicated space (Role-Based Access)
+  if (user && user.role !== 'admin') {
+    return (
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <button
+          onClick={() => setShowLandingPortal(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-white dark:bg-emerald-950/40 text-[#0B2B1E] dark:text-emerald-100 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition border border-[#E2ECE7] dark:border-emerald-800 cursor-pointer"
+          title="Retourner à la page d'accueil commune"
+        >
+          <Home className="w-3.5 h-3.5 text-[#0B7A4B] dark:text-[#FFB81F]" />
+          <span>Portail Soneya</span>
+        </button>
 
-  const goToSpace = (target: SpaceType) => {
-    const paths: Record<SpaceType, string> = {
-      client: '/client',
-      courier: '/livreur',
-      partner: '/partenaire',
-      admin: '/admin',
-    };
-    window.history.pushState({}, '', paths[target]);
-    setSpace(target);
-  };
+        <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-[#0B2B1E] text-white">
+          {user.role === 'client' && <ShoppingBag className="w-3.5 h-3.5" />}
+          {user.role === 'partner' && <Store className="w-3.5 h-3.5" />}
+          {user.role === 'courier' && <Bike className="w-3.5 h-3.5" />}
+          <span className="capitalize">Espace {user.role === 'client' ? 'Client' : user.role === 'partner' ? 'Commerçant' : 'Livreur'}</span>
+        </div>
+      </div>
+    );
+  }
 
-  // The 3 public spaces (Admin is strictly internal and never exposed to public users)
-  const publicSpaces: { id: SpaceType; label: string; icon: string; color: string }[] = [
+  // Admin or Guest (Demo mode)
+  const spaces: { id: SpaceType; label: string; short: string; icon: React.ReactNode }[] = [
     {
       id: 'client',
-      label: 'Client',
-      icon: 'shopping_bag',
-      color: 'bg-light-primary text-light-on-primary',
-    },
-    {
-      id: 'courier',
-      label: 'Rider',
-      icon: 'two_wheeler',
-      color: 'bg-courier text-on-courier',
+      label: 'Espace Client',
+      short: 'Client',
+      icon: <ShoppingBag className="w-3.5 h-3.5" />,
     },
     {
       id: 'partner',
-      label: 'Business',
-      icon: 'storefront',
-      color: 'bg-partner text-on-partner',
+      label: 'Espace Partenaire',
+      short: 'Partenaire',
+      icon: <Store className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'courier',
+      label: 'Espace Livreur',
+      short: 'Livreur',
+      icon: <Bike className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'admin',
+      label: 'Espace Admin',
+      short: 'Admin',
+      icon: <ShieldCheck className="w-3.5 h-3.5" />,
     },
   ];
-
-  // If currently in Admin space (or user is explicitly admin), include Admin badge
-  const isInternalAdmin = space === 'admin' || user?.role === 'admin';
 
   return (
     <div className="flex items-center gap-1.5 w-full sm:w-auto justify-between sm:justify-end min-w-0">
       <button
-        onClick={goToPortal}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-light-surface-container dark:bg-dark-surface-container text-light-on-surface dark:text-dark-on-surface hover:bg-light-surface-variant transition border border-light-outline dark:border-dark-outline cursor-pointer shrink-0"
-        title="Page d'accueil Soneya"
+        onClick={() => setShowLandingPortal(true)}
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-xl bg-white dark:bg-emerald-950/40 text-[#0B2B1E] dark:text-emerald-100 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition shrink-0 border border-[#E2ECE7] dark:border-emerald-800 cursor-pointer"
+        title="Page d'accueil commune Soneya"
       >
-        <span className="material-symbols-outlined text-[16px] text-light-primary dark:text-dark-primary">home</span>
+        <Home className="w-3.5 h-3.5 text-[#0B7A4B] dark:text-[#FFB81F]" />
         <span className="hidden sm:inline">Portail</span>
       </button>
 
-      <div className="flex items-center bg-light-surface-container dark:bg-dark-surface-container p-0.5 rounded-full border border-light-outline dark:border-dark-outline min-w-0">
-        {publicSpaces.map((s) => {
+      <div className="flex items-center bg-white dark:bg-emerald-950/40 p-0.5 rounded-xl border border-[#E2ECE7] dark:border-emerald-800 overflow-x-auto no-scrollbar min-w-0">
+        {spaces.map((s) => {
           const isActive = space === s.id;
           return (
             <button
               key={s.id}
-              onClick={() => goToSpace(s.id)}
-              className={`flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full transition-all whitespace-nowrap min-h-[30px] cursor-pointer ${
+              onClick={() => setSpace(s.id)}
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold rounded-lg transition-all whitespace-nowrap min-h-[32px] cursor-pointer ${
                 isActive
-                  ? `${s.color} shadow-xs font-bold`
-                  : 'text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-on-surface dark:hover:text-white'
+                  ? 'bg-[#0B7A4B] text-white shadow-xs font-bold'
+                  : 'text-[#2F4F42] dark:text-emerald-200/80 hover:text-[#0B2B1E] dark:hover:text-white'
               }`}
             >
-              <span className="material-symbols-outlined text-[15px]">{s.icon}</span>
-              <span>{s.label}</span>
+              {s.icon}
+              <span>{s.short}</span>
             </button>
           );
         })}
-
-        {isInternalAdmin && (
-          <button
-            onClick={() => goToSpace('admin')}
-            className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full transition-all whitespace-nowrap min-h-[30px] cursor-pointer ${
-              space === 'admin'
-                ? 'bg-neutral-800 text-white shadow-xs font-bold'
-                : 'text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300'
-            }`}
-            title="Console Admin Sécurisée"
-          >
-            <span className="material-symbols-outlined text-[14px]">admin_panel_settings</span>
-            <span className="text-[11px]">HQ</span>
-          </button>
-        )}
       </div>
     </div>
   );

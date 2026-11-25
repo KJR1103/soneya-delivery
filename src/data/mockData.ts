@@ -58,8 +58,6 @@ export const MOCK_PARTNERS: Partner[] = [
         category: 'Plats Traditionnels',
         available: true,
         isPopular: true,
-        isDailySpecial: true,
-        salesCount: 142,
         prepTimeMin: 18,
         options: [
           { name: 'Piment modéré', priceModifierGnf: 0 },
@@ -76,7 +74,6 @@ export const MOCK_PARTNERS: Partner[] = [
         category: 'Plats Traditionnels',
         available: true,
         isPopular: true,
-        salesCount: 98,
         prepTimeMin: 22,
         options: [
           { name: 'Sauce tomate douce', priceModifierGnf: 0 },

@@ -37,8 +37,8 @@ interface AppContextType {
   // Navigation & Space
   space: SpaceType;
   setSpace: (space: SpaceType) => void;
-  activeTab: 'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile' | 'cart';
-  setActiveTab: (tab: 'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile' | 'cart') => void;
+  activeTab: 'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile';
+  setActiveTab: (tab: 'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile') => void;
 
   // Common Landing Portal
   showLandingPortal: boolean;
@@ -192,7 +192,7 @@ const DEFAULT_USER: UserProfile = {
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [space, setSpace] = useState<SpaceType>('client');
-  const [activeTab, setActiveTab] = useState<'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile' | 'cart'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'partners' | 'search' | 'orders' | 'favorites' | 'profile'>('home');
   const [partners, setPartners] = useState<Partner[]>(() => {
     try {
       const saved = localStorage.getItem('soneya_partners_catalog');

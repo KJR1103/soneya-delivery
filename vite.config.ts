@@ -27,8 +27,8 @@ export default defineConfig(({mode}) => {
           name: 'Soneya Delivery Conakry',
           short_name: 'Soneya',
           description: 'Application de livraison tout-en-un à Conakry (Guinée)',
-          theme_color: '#176B4A',
-          background_color: '#F6F8F6',
+          theme_color: '#0B7A4B',
+          background_color: '#0B7A4B',
           display: 'standalone',
           start_url: '/',
           scope: '/',
@@ -60,7 +60,7 @@ export default defineConfig(({mode}) => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve(import.meta.dirname, '.'),
+        '@': path.resolve(__dirname, '.'),
       },
     },
     server: {

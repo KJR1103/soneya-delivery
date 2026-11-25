@@ -27,8 +27,6 @@ export interface Product {
   category: string;
   available: boolean;
   isPopular?: boolean;
-  isDailySpecial?: boolean; // Plat du jour
-  salesCount?: number;
   prepTimeMin?: number;
   options?: ProductOption[];
 }
