@@ -1,0 +1,55 @@
+SONEYA DELIVERY - CHARTE DE DESIGN (VERSION 2)
+22 novembre 2026. Remplace la version 1 « Royal Luxury » (abandonnée : plus de luxe, plus d'or).
+À lire avant chaque tâche de design (Cline, OpenCode, ou toute autre IA).
+
+1. PRINCIPE
+Une seule application et un seul site web. Trois comptes publics (Client, Entreprise, Livreur) et un espace interne (Control, web).
+Un compte = un seul rôle. Même identité visuelle partout : seules l'ergonomie et les fonctions changent.
+Style : élégant, lumineux, chaleureux, sobre. Un seul focus visuel par écran. Un seul bouton principal par écran.
+
+2. COULEURS
+Bleu profond   #1F3A8A  structure, titres, navigation, boutons secondaires
+Bleu moyen     #3567B7  accents, liens, cartes
+Bleu clair     #DCE3F4  puces, fonds de pastilles, avatars
+Corail profond #D8432F  action principale (Commander, Payer, Accepter), texte blanc dessus
+Ivoire         #FAF8F5  fond des écrans
+Blanc          #FFFFFF  cartes, champs
+Encre          #1F2430  texte principal
+Gris           #5B6577  texte secondaire
+Bordure        #E6E2DA  contours fins
+Sable          #EFE6D8  encadrés d'information
+Ambre          #F4B028  étoiles de notes uniquement
+Interdits : vert comme couleur de marque, interface sombre, dégradés agressifs, effets excessifs, emoji.
+Le corail est réservé à l'action principale et aux alertes. Jamais en grandes surfaces.
+
+3. TYPOGRAPHIE
+DM Sans (corps, boutons) et Manrope (titres, prix) si disponible. Les images de ce dossier utilisent DM Sans.
+Quatre tailles : titre, sous-titre, corps, légende. Minimum 12 px. Corps mobile 14 à 16 px.
+
+4. FORMES ET ESPACES
+Échelle d'espacement : 4, 8, 12, 16, 24, 32, 48. Aucune autre valeur.
+Cartes : coins 18 à 22 px, bordure fine, ombre douce teintée de bleu (3 niveaux maximum).
+Boutons : hauteur 52 à 60 px, coins 16 à 18 px. Zone tactile minimale 44 px.
+Puces et filtres : forme pleine arrondie. Icônes : un seul jeu (Lucide), même épaisseur.
+Responsive dès 360 px. Téléphone : navigation en bas. Ordinateur : menu latéral, tableaux, graphiques.
+
+5. ANIMATIONS
+Voir 08-animations/motion.css (système commun). Durées 150, 250, 400 ms. Transform et opacity uniquement.
+Page d'accueil animée : 08-animations/Welcome.tsx.
+
+6. CONTENU LONG
+Voir 09-contenu-long et 10-regles-et-prompts/regles-soneya.md. Aucun texte ne doit déborder.
+
+7. ÉTATS OBLIGATOIRES SUR CHAQUE ÉCRAN
+Chargement (squelettes), vide, erreur avec « Réessayer », succès, hors ligne, validation des formulaires.
+
+8. ADAPTATIONS GUINÉE
+Adresse par repère (point sur la carte + repère écrit + note vocale). Paiement Orange Money et MTN MoMo guidé.
+Réseau faible : photos légères, dernière commande hors ligne, actions mises en file.
+Langues : français, structure prête pour soussou, malinké, pular. Pharmacies de garde en tête la nuit. Chat et appel dans l'application.
+
+9. GRILLE DE VALIDATION D'UN ÉCRAN
+[ ] Un seul focus visuel    [ ] Espacements de l'échelle    [ ] Texte lisible (12 px minimum)
+[ ] Palette respectée       [ ] Aucun débordement (nom de 120 caractères, mot de 60 lettres, 12 000 produits)
+[ ] États chargement / vide / erreur / hors ligne    [ ] Animation fluide et utile
+[ ] Capture vérifiée à 360 px et sur ordinateur

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
+import { Home, Receipt, ShoppingBag, User } from 'lucide-react';
 
 export const BottomNav: React.FC = () => {
   const {
@@ -18,68 +19,62 @@ export const BottomNav: React.FC = () => {
     setActiveTab(tab);
   };
 
-  const navItems: {
-    id: 'home' | 'orders' | 'cart' | 'profile';
-    label: string;
-    icon: string;
-    badge?: number;
-  }[] = [
+  const navItems = [
     {
-      id: 'home',
+      id: 'home' as const,
       label: 'Accueil',
-      icon: 'home',
+      icon: Home,
     },
     {
-      id: 'orders',
+      id: 'orders' as const,
       label: 'Commandes',
-      icon: 'receipt_long',
+      icon: Receipt,
     },
     {
-      id: 'cart',
+      id: 'cart' as const,
       label: 'Panier',
-      icon: 'shopping_bag',
+      icon: ShoppingBag,
       badge: cartCount > 0 ? cartCount : undefined,
     },
     {
-      id: 'profile',
+      id: 'profile' as const,
       label: 'Profil',
-      icon: 'person',
+      icon: User,
     },
   ];
 
   return (
     <nav
       aria-label="Navigation mobile"
-      className="fixed bottom-0 inset-x-0 z-30 bg-light-surface-container-low/95 dark:bg-dark-surface-container-low/95 backdrop-blur-md border-t border-light-outline dark:border-dark-outline px-gutter-md sm:px-gutter-lg py-gutter-sm flex items-center justify-around shadow-lg lg:hidden"
+      className="fixed bottom-0 inset-x-0 z-30 bg-[#FFFFFF]/95 backdrop-blur-md border-t border-[#E2E8F0] px-3 py-1.5 flex items-center justify-around shadow-lg lg:hidden"
     >
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
+        const Icon = item.icon;
         return (
           <button
             key={item.id}
             type="button"
             onClick={() => handleTabClick(item.id)}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-all duration-state-change cursor-pointer relative ${
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer relative min-h-[44px] min-w-[56px] ${
               isActive
-                ? 'text-light-primary dark:text-dark-primary font-bold'
-                : 'text-light-on-surface-variant dark:text-dark-on-surface-variant hover:text-light-on-surface'
+                ? 'text-[#1E3A8A] font-bold'
+                : 'text-[#64748B] hover:text-[#0F172A]'
             }`}
           >
             <div className="relative">
-              <span
-                className="material-symbols-outlined text-title-lg"
-                style={isActive ? { fontVariationSettings: "'FILL' 1" } : undefined}
-                aria-hidden="true"
-              >
-                {item.icon}
-              </span>
+              <Icon
+                className={`w-5 h-5 transition-transform ${
+                  isActive ? 'scale-110 text-[#1E3A8A]' : 'text-[#64748B]'
+                }`}
+              />
               {item.badge !== undefined && (
-                <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 rounded-full bg-light-primary dark:bg-dark-primary text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-dark-surface-container-low">
+                <span className="absolute -top-1.5 -right-2.5 min-w-4 h-4 px-1 rounded-full bg-[#D8432F] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">
                   {item.badge}
                 </span>
               )}
             </div>
-            <span className="font-label text-label-sm">{item.label}</span>
+            <span className="text-[10px] font-semibold">{item.label}</span>
           </button>
         );
       })}

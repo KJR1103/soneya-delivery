@@ -1,0 +1,85 @@
+/* Soneya – règles anti-débordement pour milliers de produits, noms et descriptions longs. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Tout enfant d'une ligne flex ou d'une grille doit pouvoir rétrécir : sans cela le texte déborde */
+.row, .card, .cell {
+  min-width: 0;
+}
+
+.t-1, .t-2, .t-3 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.t-1 {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.t-2, .t-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.t-2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.t-3 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Grille de produits : colonnes automatiques, jamais plus étroites que 150 px */
+.grid-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  gap: 12px;
+}
+
+/* Performance : le navigateur ne dessine que les cartes visibles */
+.card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 280px;
+  contain: layout paint;
+}
+
+/* Images : ratio fixe, jamais déformées, jamais plus larges que leur boîte */
+.card img, .thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 14px;
+  background: #E9ECF4;
+}
+
+/* Description longue repliée, « Voir plus » la déplie */
+.more {
+  overflow: hidden;
+  max-height: calc(1.45em * 4);
+  transition: max-height var(--dur-3, 400ms) var(--ease-out, ease);
+}
+
+.more.open {
+  max-height: 200em;
+}
+
+/* Prix : ne jamais couper, ne jamais passer à la ligne */
+.price {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tableaux web : colonnes à largeur fixe, texte coupé par « … », info-bulle au survol */
+.table-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

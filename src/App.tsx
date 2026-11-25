@@ -15,6 +15,7 @@ import { MiniTrackerBar } from './components/common/MiniTrackerBar';
 import { AuthModal } from './components/common/AuthModal';
 import { InvoiceModal } from './components/client/InvoiceModal';
 import { PrivacyPolicyModal } from './components/common/PrivacyPolicyModal';
+import { ConsentGate, ConsentRecord } from './components/common/ConsentGate';
 import { CourierKycOnboardingModal } from './components/courier/CourierKycOnboardingModal';
 import { LandingPortal } from './components/landing/LandingPortal';
 import { ClientHome } from './components/client/ClientHome';
@@ -26,6 +27,7 @@ import { OrdersAndReceiptsView } from './components/client/OrdersAndReceiptsView
 import { CourierView } from './components/courier/CourierView';
 import { PartnerDashboard } from './components/partner/PartnerDashboard';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { ArrowLeft } from 'lucide-react';
 
 const MainContent: React.FC = () => {
   const {
@@ -34,7 +36,6 @@ const MainContent: React.FC = () => {
     selectedPartner,
     setSelectedPartnerId,
     selectedOrderId,
-    cart,
   } = useApp();
 
   const [showLiveGps, setShowLiveGps] = useState(false);
@@ -75,9 +76,9 @@ const MainContent: React.FC = () => {
           <div className="max-w-xl mx-auto px-4 pt-3">
             <button
               onClick={() => setShowLiveGps(false)}
-              className="px-3 py-1.5 text-xs font-bold text-light-primary dark:text-dark-primary hover:underline flex items-center gap-1 cursor-pointer"
+              className="px-3 py-1.5 text-xs font-bold text-[#1F3A8A] hover:underline flex items-center gap-1 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-sm">arrow_back</span>
+              <ArrowLeft className="w-4 h-4" />
               <span>Retour aux commandes &amp; reçus</span>
             </button>
           </div>
@@ -102,6 +103,24 @@ const AppInner: React.FC = () => {
     isCourierOnboardingModalOpen,
     setIsCourierOnboardingModalOpen,
   } = useApp();
+
+  const [hasConsented, setHasConsented] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('soneya_consent_v1') === 'accepted';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleAcceptConsent = (consent: ConsentRecord) => {
+    try {
+      localStorage.setItem('soneya_consent_v1', 'accepted');
+      localStorage.setItem('soneya_consent_record', JSON.stringify(consent));
+    } catch (e) {
+      console.warn(e);
+    }
+    setHasConsented(true);
+  };
 
   useEffect(() => {
     const syncRoute = () => {
@@ -147,12 +166,13 @@ const AppInner: React.FC = () => {
 
   if (showLandingPortal) {
     return (
-      <div className="min-h-screen w-full overflow-x-hidden bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface flex flex-col font-body transition-colors duration-200">
+      <div className="min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] flex flex-col font-body transition-colors duration-200">
         <OfflineIndicator />
         <NotificationToast />
         <LandingPortal />
         <AuthModal />
         <PrivacyPolicyModal />
+        <ConsentGate isOpen={!hasConsented} onAccept={handleAcceptConsent} />
         <CourierKycOnboardingModal
           isOpen={isCourierOnboardingModalOpen}
           onClose={() => setIsCourierOnboardingModalOpen(false)}
@@ -162,7 +182,7 @@ const AppInner: React.FC = () => {
   }
 
   return (
-    <div className={`app-shell app-shell-${space} min-h-screen w-full overflow-x-hidden bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface flex flex-col font-body transition-colors duration-200`}>
+    <div className={`app-shell app-shell-${space} min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] flex flex-col font-body transition-colors duration-200`}>
       <OfflineIndicator />
       <NotificationToast />
       {space === 'client' && <Header />}
@@ -176,6 +196,7 @@ const AppInner: React.FC = () => {
 
       <AuthModal />
       <PrivacyPolicyModal />
+      <ConsentGate isOpen={!hasConsented} onAccept={handleAcceptConsent} />
 
       <CourierKycOnboardingModal
         isOpen={isCourierOnboardingModalOpen}

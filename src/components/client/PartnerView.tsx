@@ -3,6 +3,7 @@ import { Partner, Product } from '../../types';
 import { formatGnf } from '../../utils/formatters';
 import { calculateDistanceKm, calculateDeliveryFeeGnf } from '../../utils/geo';
 import { useApp } from '../../context/AppContext';
+import { ProductCard } from '../common/ProductCard';
 import { ProductModal } from './ProductModal';
 import { ReviewsModal } from './ReviewsModal';
 import {
@@ -11,13 +12,10 @@ import {
   Clock,
   MapPin,
   Heart,
-  Plus,
-  Sparkles,
-  Check,
   Share2,
   Search,
-  MessageSquare,
-  UtensilsCrossed,
+  Bike,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface PartnerViewProps {
@@ -30,10 +28,7 @@ export const PartnerView: React.FC<PartnerViewProps> = ({ partner, onBack }) => 
     location,
     favorites,
     toggleFavorite,
-    cart,
-    cartCount,
-    cartSubtotalGnf,
-    setActiveTab,
+    addToCart,
     showToast,
   } = useApp();
 
@@ -79,20 +74,25 @@ export const PartnerView: React.FC<PartnerViewProps> = ({ partner, onBack }) => 
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      showToast('Lien copié', 'Lien du restaurant copié dans le presse-papier !', 'success');
+      showToast('Lien copié', 'Lien du restaurant copié dans le presse-papier !', 'info');
     }
   };
 
+  const handleQuickAdd = (product: Product) => {
+    addToCart(product, partner);
+    showToast('Ajouté au panier', `${product.name} ajouté`, 'success');
+  };
+
   return (
-    <div className="pb-32">
+    <div className="pb-32 text-[#0F172A] m-reveal">
       {/* Cover Image & Quick Nav */}
-      <div className="relative h-56 sm:h-64 w-full bg-[#081C13] overflow-hidden">
+      <div className="relative h-56 sm:h-64 w-full bg-[#1E3A8A] overflow-hidden">
         <img
           src={partner.coverImage}
           alt={partner.name}
-          className="w-full h-full object-cover opacity-90"
+          className="w-full h-full object-cover opacity-85"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/30" />
 
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
           <button
@@ -117,7 +117,7 @@ export const PartnerView: React.FC<PartnerViewProps> = ({ partner, onBack }) => 
             >
               <Heart
                 className={`w-5 h-5 transition ${
-                  isFav ? 'fill-rose-500 text-rose-500' : 'text-white'
+                  isFav ? 'fill-[#D8432F] text-[#D8432F]' : 'text-white'
                 }`}
               />
             </button>
@@ -134,203 +134,114 @@ export const PartnerView: React.FC<PartnerViewProps> = ({ partner, onBack }) => 
             />
           </div>
           <div className="text-white min-w-0 flex-1">
-            <span className="text-[11px] font-bold text-[#FFB81F] uppercase tracking-wider">
+            <span className="text-[11px] font-bold text-[#F4B028] uppercase tracking-wider">
               {partner.categoryLabel}
             </span>
-            <h1 className="font-heading font-extrabold text-xl sm:text-2xl text-white truncate">
+            <h1 className="font-headline font-extrabold text-xl sm:text-2xl text-white truncate">
               {partner.name}
             </h1>
             <div className="flex items-center gap-2 sm:gap-3 text-xs text-white/90 mt-1 flex-wrap">
               <button
                 onClick={() => setIsReviewsOpen(true)}
-                className="flex items-center gap-1 font-bold text-[#FFB81F] hover:underline cursor-pointer"
+                className="flex items-center gap-1 font-bold text-[#F4B028] hover:underline cursor-pointer"
               >
-                <Star className="w-3.5 h-3.5 fill-[#FFB81F]" />
+                <Star className="w-3.5 h-3.5 fill-[#F4B028]" />
                 <span>
                   {partner.rating} ({partner.reviewsCount} avis)
                 </span>
               </button>
               <span>·</span>
               <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5" />
-                {partner.quartierName} ({distanceKm} km)
+                <Clock className="w-3.5 h-3.5" />
+                <span>{partner.deliveryTimeMin || 20}-{ (partner.deliveryTimeMin || 20) + 15} min</span>
               </span>
               <span>·</span>
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
-                ~{partner.deliveryTimeMin} min
+                <MapPin className="w-3.5 h-3.5" />
+                <span>{partner.address}</span>
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main container */}
-      <div className="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 mt-4 space-y-4">
-        {/* Delivery Fee Info Banner */}
-        <div className="p-3.5 rounded-2xl bg-white dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D] flex items-center justify-between gap-2 text-xs shadow-xs">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50/70 dark:bg-[#10231B] text-[#0B7A4B] dark:text-[#FFB81F] flex items-center justify-center font-bold text-xs border border-[#D4E9DD] dark:border-[#1E3B2D] shrink-0">
-              GNF
-            </div>
-            <div className="min-w-0">
-              <span className="font-bold text-[#0B2B1E] dark:text-white block">
-                Frais de livraison : {formatGnf(feeCalc.feeGnf)}
-              </span>
-              <div className="text-[11px] text-[#5C7A6E] dark:text-emerald-200/75 truncate">
-                Calculé selon {distanceKm} km depuis ({location.quartier.name})
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-5">
+        {/* Distance and delivery fee banner */}
+        <div className="p-3.5 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] flex flex-wrap items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-2 text-xs font-semibold">
+            <Bike className="w-4 h-4 text-[#1E3A8A]" />
+            <span>Livraison vers {location.quartier.name} ({distanceKm} km)</span>
           </div>
-          <button
-            onClick={() => setIsReviewsOpen(true)}
-            className="flex items-center gap-1 text-[11px] font-bold text-[#0B7A4B] dark:text-[#FFB81F] bg-white dark:bg-[#10231B] hover:bg-emerald-50 px-3 py-2 rounded-xl border border-[#D4E9DD] dark:border-[#1E3B2D] transition cursor-pointer shrink-0 min-h-[40px]"
-          >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Avis</span>
-          </button>
+          <span className="text-xs font-bold text-[#1E3A8A] font-mono">
+            Frais : {formatGnf(feeCalc.feeGnf)}
+          </span>
         </div>
 
-        {/* Promo Announcement Banner */}
-        {partner.bannerOffer && (
-          <div className="p-3.5 rounded-2xl bg-emerald-50/60 dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] flex items-center gap-2.5 text-xs shadow-xs">
-            <Sparkles className="w-4 h-4 text-[#0B7A4B] dark:text-[#FFB81F] shrink-0" />
-            <span className="font-semibold text-[#0B2B1E] dark:text-emerald-100">
-              {partner.bannerOffer}
-            </span>
+        {/* Search & Categories Bar */}
+        <div className="space-y-3">
+          <div className="relative">
+            <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={menuSearch}
+              onChange={(e) => setMenuSearch(e.target.value)}
+              placeholder={`Rechercher dans le menu de ${partner.name}...`}
+              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-[#FFFFFF] border border-[#E2E8F0] focus:outline-none focus:border-[#1E3A8A] text-[#0F172A]"
+            />
           </div>
-        )}
 
-        {/* Search inside menu */}
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#5C7A6E]" />
-          <input
-            type="text"
-            placeholder={`Rechercher chez ${partner.name}...`}
-            value={menuSearch}
-            onChange={(e) => setMenuSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 text-xs rounded-xl bg-white dark:bg-[#0C1913] border border-[#D4E9DD] dark:border-[#1E3B2D] focus:outline-none focus:border-[#0B7A4B] text-[#0B2B1E] dark:text-white placeholder:text-[#5C7A6E] shadow-xs min-h-[44px]"
-          />
-        </div>
-
-        {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer min-h-[38px] ${
-                  isActive
-                    ? 'bg-[#0B7A4B] text-white shadow-xs border border-[#0B7A4B]'
-                    : 'bg-white dark:bg-[#0C1913] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#2F4F42] dark:text-emerald-100 hover:border-[#0B7A4B]'
+                className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+                  activeCategory === cat
+                    ? 'bg-[#1E3A8A] text-white shadow-xs'
+                    : 'bg-[#FFFFFF] border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC]'
                 }`}
               >
-                {cat === 'all' ? (
-                  <span className="flex items-center gap-1.5">
-                    <UtensilsCrossed className="w-3.5 h-3.5" />
-                    <span>Tout le menu</span>
-                  </span>
-                ) : (
-                  cat
-                )}
+                {cat === 'all' ? 'Tout le menu' : cat}
               </button>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {filteredProducts.map((product) => {
-            const inCart = cart.find((i) => i.product.id === product.id);
-            return (
-              <div
-                key={product.id}
-                onClick={() => setSelectedProduct(product)}
-                className="group relative flex gap-3.5 p-3 rounded-2xl bg-white dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D] hover:border-[#0B7A4B] hover:shadow-xs transition cursor-pointer"
-              >
-                <div className="flex-1 flex flex-col justify-between min-w-0">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-heading font-bold text-sm text-[#0B2B1E] dark:text-white group-hover:text-[#0B7A4B] transition line-clamp-1">
-                        {product.name}
-                      </h3>
-                      {product.isPopular && (
-                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-50 dark:bg-[#10231B] text-[#0B7A4B] dark:text-emerald-400 border border-[#D4E9DD] dark:border-[#1E3B2D]">
-                          Populaire
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-1 text-xs text-[#5C7A6E] dark:text-emerald-200/75 line-clamp-2 leading-relaxed">
-                      {product.description}
-                    </p>
-                  </div>
+        <div className="space-y-3">
+          <h2 className="font-headline font-extrabold text-lg text-[#0F172A]">
+            Articles au menu ({filteredProducts.length})
+          </h2>
 
-                  <div className="mt-3 flex items-center justify-between gap-2">
-                    <span className="font-heading font-extrabold text-sm text-[#0B7A4B] dark:text-[#FFB81F]">
-                      {formatGnf(product.priceGnf)}
-                    </span>
-                    {inCart ? (
-                      <span className="flex items-center gap-1 text-[11px] font-bold text-[#0B7A4B] dark:text-white bg-emerald-50 dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] px-2 py-0.5 rounded-md">
-                        <Check className="w-3 h-3" />
-                        {inCart.quantity} au panier
-                      </span>
-                    ) : (
-                      <span className="w-8 h-8 rounded-lg bg-emerald-50/70 dark:bg-[#10231B] group-hover:bg-[#0B7A4B] group-hover:text-white transition flex items-center justify-center text-[#0B7A4B] dark:text-[#FFB81F] border border-[#D4E9DD] dark:border-[#1E3B2D]">
-                        <Plus className="w-4 h-4" />
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="w-24 h-24 rounded-xl overflow-hidden bg-emerald-50/40 dark:bg-[#10231B] shrink-0 relative border border-[#E2ECE7] dark:border-[#1E3B2D]">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                  />
-                </div>
-              </div>
-            );
-          })}
+          {filteredProducts.length === 0 ? (
+            <div className="p-12 text-center rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0]">
+              <p className="font-bold text-sm text-[#0F172A]">Aucun article trouvé</p>
+              <p className="text-xs text-[#64748B] mt-1">Essayez un autre mot-clé.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {filteredProducts.map((prod, index) => (
+                <ProductCard
+                  key={prod.id}
+                  product={prod}
+                  index={index}
+                  onSelect={(p) => setSelectedProduct(p)}
+                  onAddToCart={(p) => handleQuickAdd(p)}
+                />
+              ))}
+            </div>
+          )}
         </div>
-
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-10 text-xs text-[#5C7A6E] dark:text-emerald-200/70">
-            Aucun article trouvé pour « {menuSearch} »
-          </div>
-        )}
       </div>
 
-      {/* Floating Checkout bar */}
-      {cartCount > 0 && (
-        <div className="fixed bottom-20 lg:bottom-5 left-3 right-3 z-30 max-w-lg mx-auto">
-          <button
-            onClick={() => setActiveTab('orders')}
-            className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#0B7A4B] hover:bg-[#08613B] text-white shadow-xl font-bold text-sm transition transform hover:-translate-y-0.5 cursor-pointer border border-[#08613B] min-h-[52px]"
-          >
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-white text-[#0B7A4B] text-xs font-black flex items-center justify-center">
-                {cartCount}
-              </span>
-              <span>Voir le panier</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-heading font-extrabold text-base">
-                {formatGnf(cartSubtotalGnf)}
-              </span>
-            </div>
-          </button>
-        </div>
-      )}
-
       {/* Product Detail Modal */}
-      <ProductModal
-        product={selectedProduct}
-        partner={partner}
-        onClose={() => setSelectedProduct(null)}
-      />
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          partner={partner}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
 
       {/* Reviews Modal */}
       <ReviewsModal
