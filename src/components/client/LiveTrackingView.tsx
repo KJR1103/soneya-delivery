@@ -4,24 +4,6 @@ import { Order, OrderStatus } from '../../types';
 import { formatGnf, formatTime } from '../../utils/formatters';
 import { ConakryMap } from './ConakryMap';
 import { sound } from '../../utils/audio';
-import {
-  Bike,
-  Phone,
-  MessageCircle,
-  Clock,
-  CheckCircle2,
-  ChevronRight,
-  ShieldCheck,
-  Send,
-  X,
-  Play,
-  RotateCcw,
-  Navigation,
-  Star,
-  Check,
-  ChevronUp,
-  ChevronDown,
-} from 'lucide-react';
 
 interface LiveTrackingViewProps {
   orderId?: string | null;
@@ -86,19 +68,19 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({ orderId }) =
 
   if (!currentOrder) {
     return (
-      <div className="max-w-md mx-auto px-4 py-16 text-center space-y-4">
-        <div className="w-16 h-16 mx-auto rounded-3xl bg-emerald-50/70 dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] flex items-center justify-center text-[#0B7A4B] dark:text-[#FFB81F]">
-          <Clock className="w-8 h-8" />
+      <div className="max-w-md mx-auto px-gutter-md py-16 text-center space-y-gutter-md">
+        <div className="w-16 h-16 mx-auto rounded-full bg-light-primary-container dark:bg-dark-primary-container border border-light-outline dark:border-dark-outline flex items-center justify-center text-light-primary dark:text-dark-primary">
+          <span className="material-symbols-outlined text-headline-md" aria-hidden="true">schedule</span>
         </div>
-        <h2 className="font-heading font-bold text-lg text-[#0B2B1E] dark:text-white">
+        <h2 className="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface">
           Aucune commande en cours
         </h2>
-        <p className="text-xs text-[#2F4F42] dark:text-emerald-200/80">
+        <p className="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">
           Vos commandes actives apparaîtront ici avec leur géolocalisation en direct.
         </p>
         <button
           onClick={() => setActiveTab('home')}
-          className="px-5 py-3 rounded-xl bg-[#0B7A4B] hover:bg-[#08613B] text-white text-xs font-bold transition shadow-sm cursor-pointer min-h-[44px]"
+          className="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-lg hover:opacity-90 cursor-pointer"
         >
           Commander maintenant
         </button>
@@ -106,31 +88,11 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({ orderId }) =
     );
   }
 
-  const steps: { key: string; title: string; subtitle: string; stageOrder: number }[] = [
-    {
-      key: 'valide',
-      title: 'Validé',
-      subtitle: 'Paiement confirmé via Orange Money / MoMo',
-      stageOrder: 0,
-    },
-    {
-      key: 'preparation',
-      title: 'En préparation',
-      subtitle: 'Le commerçant emballe votre commande',
-      stageOrder: 1,
-    },
-    {
-      key: 'livraison',
-      title: 'En livraison',
-      subtitle: 'Le motard roule vers votre adresse',
-      stageOrder: 2,
-    },
-    {
-      key: 'arrive',
-      title: 'Arrivé',
-      subtitle: 'Remise en mains propres avec code secret',
-      stageOrder: 3,
-    },
+  const steps: { key: string; title: string; subtitle: string; stageOrder: number; icon: string }[] = [
+    { key: 'valide', title: 'Validé', subtitle: 'Paiement confirmé via Orange Money / MoMo', stageOrder: 0, icon: 'check_circle' },
+    { key: 'preparation', title: 'En préparation', subtitle: 'Le commerçant emballe votre commande', stageOrder: 1, icon: 'restaurant' },
+    { key: 'livraison', title: 'En livraison', subtitle: 'Le motard roule vers votre adresse', stageOrder: 2, icon: 'two_wheeler' },
+    { key: 'arrive', title: 'Arrivé', subtitle: 'Remise en mains propres avec code secret', stageOrder: 3, icon: 'home' },
   ];
 
   const get4StepIndex = (status: OrderStatus) => {
@@ -151,11 +113,6 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({ orderId }) =
       updateOrderStatus(currentOrder.id, sequence[curIdx + 1]);
       sound.playStatusPing();
     }
-  };
-
-  const handleResetStage = () => {
-    updateOrderStatus(currentOrder.id, 'submitted', 'Simulation réinitialisée');
-    sound.playPop();
   };
 
   const handleSendMessage = () => {
@@ -197,525 +154,242 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({ orderId }) =
       ? 0
       : currentOrder.deliveryDistanceKm;
 
+  const rider = currentOrder.courier;
+  const riderInitials = rider ? rider.name.split(' ').map((n) => n[0]).join('').slice(0, 2) : 'IS';
+
   return (
-    <div className="max-w-3xl mx-auto px-3 sm:px-4 py-3 pb-32 space-y-3.5">
-      {/* Top Status Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span className="text-[10px] font-mono text-[#5C7A6E] dark:text-emerald-300/70 uppercase">
-            N° {currentOrder.trackingNumber}
-          </span>
-          <h1 className="font-heading font-extrabold text-xl text-[#0B2B1E] dark:text-white">
-            Suivi GPS en direct
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {currentOrder.status === 'delivered' ? (
-            <span className="px-3 py-1.5 rounded-full bg-emerald-50/70 dark:bg-[#10231B] text-[#0B7A4B] dark:text-emerald-300 border border-[#D4E9DD] dark:border-[#1E3B2D] font-bold text-xs flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Livrée & Validée
-            </span>
-          ) : (
-            <span className="px-3 py-1.5 rounded-full bg-emerald-50/70 dark:bg-[#10231B] text-[#0B2B1E] dark:text-emerald-100 border border-[#D4E9DD] dark:border-[#1E3B2D] font-bold text-xs flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#0B7A4B] dark:bg-[#FFB81F] animate-pulse" />
-              <span>
-                {steps[currentStepIndex].title} (~{currentOrder.estimatedDeliveryMinutes} min)
-              </span>
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* CARTE PLEIN ÉCRAN */}
-      <div className="relative rounded-2xl overflow-hidden border border-[#E2ECE7] dark:border-[#1E3B2D] shadow-sm">
-        <div className="h-[250px] sm:h-[360px] lg:h-[400px]">
-          <ConakryMap
-            partnerLat={currentOrder.partnerLat}
-            partnerLng={currentOrder.partnerLng}
-            partnerName={currentOrder.partnerName}
-            clientLat={currentOrder.clientLat}
-            clientLng={currentOrder.clientLng}
-            clientAddress={currentOrder.clientQuartier}
-            courier={currentOrder.courier}
-            orderStatus={currentOrder.status}
-          />
-        </div>
-
-        {currentOrder.status === 'delivering' && (
-          <div className="absolute top-3 left-3 right-3 sm:left-auto sm:right-3 p-3 rounded-xl bg-white/95 dark:bg-[#0C1913]/95 backdrop-blur-md border border-[#D4E9DD] dark:border-[#1E3B2D] shadow-lg flex items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-[#0B7A4B] dark:text-[#FFB81F]" />
-              <span className="font-bold text-[#0B2B1E] dark:text-white">
-                Motard à {remainingKm} km
-              </span>
-            </div>
-            <span className="text-[11px] font-bold text-[#0B7A4B] dark:text-[#FFB81F]">
-              Arrivée : ~{Math.max(3, Math.round(remainingKm * 3))} min
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* CIRCULAR COUNTDOWN TIMER */}
-      <div className="p-5 rounded-3xl bg-white dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D] shadow-xs flex flex-col items-center text-center space-y-3">
-        <div className="relative w-28 h-28 flex items-center justify-center">
-          <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              className="stroke-[#E2ECE7] dark:stroke-[#1E3B2D]"
-              strokeWidth="6"
-              fill="transparent"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              className="stroke-[#0B7A4B] dark:stroke-[#FFB81F] transition-all duration-700 ease-out"
-              strokeWidth="6"
-              strokeDasharray={251}
-              strokeDashoffset={
-                currentOrder.status === 'delivered'
-                  ? 0
-                  : currentOrder.status === 'delivering'
-                  ? 251 * 0.35
-                  : currentOrder.status === 'ready'
-                  ? 251 * 0.55
-                  : currentOrder.status === 'preparing'
-                  ? 251 * 0.75
-                  : 251 * 0.9
-              }
-              strokeLinecap="round"
-              fill="transparent"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-heading font-black text-2xl text-[#0B2B1E] dark:text-white leading-none">
-              {currentOrder.status === 'delivered'
-                ? '0'
-                : currentOrder.status === 'delivering'
-                ? Math.max(3, Math.round(remainingKm * 3))
-                : currentOrder.estimatedDeliveryMinutes || 25}
-            </span>
-            <span className="text-[10px] font-bold text-[#5C7A6E] dark:text-emerald-300/70 uppercase tracking-wider mt-0.5">
-              min
-            </span>
-            <span className="text-[9px] text-[#5C7A6E] dark:text-emerald-200/70">
-              {currentOrder.status === 'delivered' ? 'Livré' : 'estimation'}
-            </span>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="font-heading font-black text-base text-[#0B2B1E] dark:text-white">
-            {currentOrder.partnerName}
-          </h3>
-          <p className="text-xs text-[#2F4F42] dark:text-emerald-200/80 mt-0.5">
-            {currentOrder.status === 'delivered'
-              ? 'Votre commande a été remise en mains propres avec succès !'
-              : currentOrder.status === 'delivering'
-              ? 'Votre motard roule vers votre adresse à Conakry'
-              : 'Votre commande est en préparation chez le partenaire'}
-          </p>
-        </div>
-      </div>
-
-      {/* BOTTOM SHEET DYNAMIQUE */}
-      <div className="rounded-3xl bg-white dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D] shadow-lg p-4 sm:p-5 space-y-4">
+    <div className="max-w-3xl mx-auto flex flex-col gap-gutter-lg pb-32">
+      {/* Sticky header */}
+      <header className="sticky top-0 z-30 bg-light-surface-container-low/95 dark:bg-dark-surface-container-low/95 backdrop-blur-md border-b border-light-outline dark:border-dark-outline px-gutter-md py-gutter-md flex items-center justify-between">
         <button
-          onClick={() => setIsBottomSheetExpanded(!isBottomSheetExpanded)}
-          className="w-full flex flex-col items-center py-1.5 cursor-pointer select-none group text-[#5C7A6E] hover:text-[#0B2B1E] dark:text-emerald-200/80 dark:hover:text-white transition"
+          onClick={() => setActiveTab('home')}
+          className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-light-surface-container dark:bg-dark-surface-container text-light-on-surface dark:text-dark-on-surface cursor-pointer"
+          aria-label="Retour"
         >
-          <div className="w-12 h-1.5 rounded-full bg-[#D4E9DD] dark:bg-[#1E3B2D] group-hover:bg-[#0B7A4B] dark:group-hover:bg-[#FFB81F] transition mb-1.5" />
-          <div className="flex items-center gap-1 text-[11px] font-bold">
-            <span>
-              {isBottomSheetExpanded
-                ? 'Réduire le panneau'
-                : 'Déplier le suivi détaillé & code secret'}
-            </span>
-            {isBottomSheetExpanded ? (
-              <ChevronDown className="w-3.5 h-3.5" />
-            ) : (
-              <ChevronUp className="w-3.5 h-3.5" />
-            )}
-          </div>
+          <span className="material-symbols-outlined text-title-md" aria-hidden="true">arrow_back</span>
         </button>
+        <h1 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+          Suivi commande #{currentOrder.trackingNumber}
+        </h1>
+        <span className="font-mono text-mono-sm text-light-primary dark:text-dark-primary">
+          {currentOrder.status === 'delivered' ? 'Livré' : `~${Math.max(3, Math.round(remainingKm * 3))} min`}
+        </span>
+      </header>
 
-        {/* 4 STEPS */}
-        <div className="space-y-3 pt-1">
-          <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-            <span className="font-heading font-black text-[#0B2B1E] dark:text-white uppercase tracking-wider text-[11px]">
-              Progression de commande (4 étapes)
-            </span>
-            <span className="text-[11px] font-bold text-[#0B7A4B] dark:text-[#FFB81F]">
-              Étape {currentStepIndex + 1} sur 4
-            </span>
-          </div>
-
-          <div className="grid grid-cols-4 gap-1 sm:gap-2 items-start">
-            {steps.map((st, i) => {
-              const isPast =
-                i < currentStepIndex || currentOrder.status === 'delivered';
-              const isNow =
-                i === currentStepIndex && currentOrder.status !== 'delivered';
-
-              return (
-                <div
-                  key={st.key}
-                  className="flex flex-col items-center text-center space-y-1.5"
-                >
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                      isPast
-                        ? 'bg-[#0B7A4B] text-white shadow-xs'
-                        : isNow
-                        ? 'bg-[#0B7A4B] text-white ring-4 ring-[#0B7A4B]/25 animate-pulse'
-                        : 'bg-white dark:bg-[#10231B] text-[#5C7A6E] dark:text-emerald-300/60 border border-[#D4E9DD] dark:border-[#1E3B2D]'
-                    }`}
-                  >
-                    {isPast ? <Check className="w-4 h-4 stroke-[3]" /> : i + 1}
-                  </div>
-                  <span
-                    className={`text-[10px] leading-tight font-heading ${
-                      isNow
-                        ? 'font-black text-[#0B7A4B] dark:text-[#FFB81F]'
-                        : isPast
-                        ? 'font-bold text-[#0B2B1E] dark:text-emerald-100'
-                        : 'text-[#5C7A6E] dark:text-emerald-300/60'
-                    }`}
-                  >
-                    {st.title}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* CODE SECRET DE LIVRAISON */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-white space-y-2.5 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#0B7A4B] dark:text-[#FFB81F]" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0B2B1E] dark:text-white">
-                Code Secret de Livraison
-              </span>
-            </div>
-            {currentOrder.isCodeValidated || currentOrder.status === 'delivered' ? (
-              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-[#0C1913] text-[#0B7A4B] dark:text-emerald-300 border border-[#D4E9DD] dark:border-[#1E3B2D] flex items-center gap-1">
-                <Check className="w-3 h-3" />
-                <span>Remise validée</span>
-              </span>
-            ) : (
-              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50/70 dark:bg-[#0C1913] text-[#0B7A4B] dark:text-[#FFB81F] border border-[#D4E9DD] dark:border-[#1E3B2D]">
-                À dicter au motard
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-emerald-50/40 dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D]">
+      {/* Route visual header */}
+      <div className="relative h-48 bg-light-primary-container dark:bg-dark-primary-container border-b border-light-outline dark:border-dark-outline flex flex-col items-center justify-center p-gutter-md mx-0">
+        <div className="w-full max-w-xs p-gutter-md rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-gutter-sm">
+            <span className="material-symbols-outlined text-title-lg text-light-primary dark:text-dark-primary" aria-hidden="true">two_wheeler</span>
             <div>
-              <div className="text-[10px] text-[#2F4F42] dark:text-emerald-300 font-medium">
-                Code à 4 chiffres :
-              </div>
-              <div className="font-mono font-black text-2xl sm:text-3xl tracking-[0.25em] sm:tracking-[0.3em] text-[#0B2B1E] dark:text-white mt-0.5">
-                {currentOrder.deliveryCode || '8492'}
-              </div>
-            </div>
-            <div className="sm:text-right sm:max-w-[190px] text-[11px] text-[#2F4F42] dark:text-emerald-200/80 leading-relaxed">
-              Donnez ce code au livreur uniquement une fois vos articles reçus.
+              <p className="font-label text-label-md text-light-on-surface dark:text-dark-on-surface">
+                {currentOrder.partnerName} → {currentOrder.clientQuartier}
+              </p>
+              <p className="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                GPS actif · {remainingKm} km
+              </p>
             </div>
           </div>
+          <span className="font-mono text-mono-sm text-light-primary dark:text-dark-primary">{remainingKm} km</span>
         </div>
-
-        {/* CONTENU ÉTENDU DU BOTTOM SHEET */}
-        {isBottomSheetExpanded && (
-          <div className="space-y-4 pt-1 animate-in fade-in">
-            {currentOrder.courier && (
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#10231B] border border-[#E2ECE7] dark:border-[#1E3B2D] shadow-xs space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C7A6E] dark:text-emerald-300/70">
-                    Votre motard Soneya
-                  </span>
-                  <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50/70 dark:bg-[#0C1913] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#0B7A4B] dark:text-emerald-300 text-[10px] font-bold">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Identité vérifiée par Soneya</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="relative shrink-0">
-                      <img
-                        src={currentOrder.courier.avatar}
-                        alt={currentOrder.courier.name}
-                        className="w-12 h-12 rounded-xl object-cover ring-2 ring-[#D4E9DD] dark:ring-[#1E3B2D]"
-                      />
-                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#0B7A4B] border-2 border-white dark:border-[#0C1913] flex items-center justify-center text-white">
-                        <Check className="w-2.5 h-2.5 stroke-[3]" />
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <h3 className="font-heading font-extrabold text-sm text-[#0B2B1E] dark:text-white truncate">
-                          {currentOrder.courier.name}
-                        </h3>
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-50/70 dark:bg-[#0C1913] text-[#0B2B1E] dark:text-emerald-100 border border-[#D4E9DD] dark:border-[#1E3B2D] flex items-center gap-1">
-                          <Star className="w-3 h-3 fill-[#FFB81F] text-[#FFB81F]" />
-                          <span>{currentOrder.courier.rating}</span>
-                        </span>
-                      </div>
-                      <div className="text-[11px] text-[#5C7A6E] dark:text-emerald-200/75 flex items-center gap-1 mt-0.5 truncate">
-                        <Bike className="w-3 h-3 text-[#0B7A4B] dark:text-[#FFB81F] shrink-0" />
-                        <span className="truncate">
-                          {currentOrder.courier.vehicle} ({currentOrder.courier.plateNumber})
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => setIsCalling(true)}
-                      className="w-11 h-11 rounded-xl bg-white dark:bg-[#0C1913] text-[#0B7A4B] dark:text-[#FFB81F] hover:bg-emerald-50 dark:hover:bg-[#193B2C] flex items-center justify-center transition border border-[#D4E9DD] dark:border-[#1E3B2D] cursor-pointer shadow-xs"
-                      title="Appeler le coursier"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setIsChatOpen(true)}
-                      className="w-11 h-11 rounded-xl bg-white dark:bg-[#0C1913] text-[#0B7A4B] dark:text-[#FFB81F] hover:bg-emerald-50 dark:hover:bg-[#193B2C] flex items-center justify-center transition border border-[#D4E9DD] dark:border-[#1E3B2D] cursor-pointer shadow-xs"
-                      title="Envoyer un message"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Simulation controls */}
-            <div className="p-3 rounded-2xl bg-white dark:bg-[#10231B] border border-[#E2ECE7] dark:border-[#1E3B2D] flex flex-wrap items-center justify-between gap-2 shadow-xs">
-              <div className="text-[11px] font-semibold text-[#0B2B1E] dark:text-emerald-100 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#0B7A4B] dark:bg-[#FFB81F]" />
-                <span>Simulateur d'étapes :</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => setIsAutoSimulating(!isAutoSimulating)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer border min-h-[36px] ${
-                    isAutoSimulating
-                      ? 'bg-[#0B7A4B] text-white border-[#0B7A4B]'
-                      : 'bg-white dark:bg-[#0C1913] text-[#0B2B1E] dark:text-emerald-100 border-[#D4E9DD] dark:border-[#1E3B2D] hover:border-[#0B7A4B]'
-                  }`}
-                >
-                  <Play className="w-3 h-3" />
-                  <span>{isAutoSimulating ? 'Pause' : 'Auto-play'}</span>
-                </button>
-
-                {currentOrder.status !== 'delivered' ? (
-                  <button
-                    onClick={handleNextStage}
-                    className="px-3 py-1.5 rounded-lg bg-[#0B7A4B] hover:bg-[#08613B] text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer min-h-[36px]"
-                  >
-                    <span>Étape suivante</span>
-                    <ChevronRight className="w-3 h-3" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleResetStage}
-                    className="px-3 py-1.5 rounded-lg bg-[#0B2B1E] hover:bg-[#081C13] text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer min-h-[36px]"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    <span>Recommencer</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Destination & Landmark Recap */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#10231B] border border-[#E2ECE7] dark:border-[#1E3B2D] space-y-1.5 text-xs shadow-xs">
-              <div className="font-bold text-[#0B2B1E] dark:text-white">
-                Adresse de livraison
-              </div>
-              <div className="text-[#2F4F42] dark:text-emerald-200/80">
-                {currentOrder.clientAddress} ({currentOrder.clientQuartier})
-              </div>
-              {currentOrder.deliveryLandmark && (
-                <div className="p-2.5 rounded-xl bg-emerald-50/40 dark:bg-[#0C1913] text-[11px] text-[#0B2B1E] dark:text-emerald-100 border border-[#E2ECE7] dark:border-[#1E3B2D]">
-                  <strong>Repère :</strong> {currentOrder.deliveryLandmark}
-                </div>
-              )}
-            </div>
-
-            {/* Order Summary Recap */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#10231B] border border-[#E2ECE7] dark:border-[#1E3B2D] space-y-3 shadow-xs">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-[#0B2B1E] dark:text-white">
-                  Détails des articles
-                </span>
-                <span className="text-[#5C7A6E] dark:text-emerald-300/70">
-                  {formatTime(currentOrder.createdAt)}
-                </span>
-              </div>
-
-              <div className="space-y-1.5 text-xs text-[#2F4F42] dark:text-emerald-100/90">
-                {currentOrder.items.map((i) => (
-                  <div
-                    key={i.product.id}
-                    className="flex justify-between py-1.5 border-b border-[#E2ECE7] dark:border-[#1E3B2D]"
-                  >
-                    <span>
-                      {i.quantity}x {i.product.name}
-                    </span>
-                    <span className="font-semibold text-[#0B2B1E] dark:text-white">
-                      {formatGnf(i.product.priceGnf * i.quantity)}
-                    </span>
-                  </div>
-                ))}
-
-                <div className="pt-2 flex justify-between font-bold text-sm text-[#0B2B1E] dark:text-white">
-                  <span>Total payé</span>
-                  <span className="text-[#0B7A4B] dark:text-[#FFB81F]">
-                    {formatGnf(currentOrder.totalGnf)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Call Simulator Modal */}
-      {isCalling && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 animate-in fade-in">
-          <div className="w-full max-w-xs max-h-[90dvh] overflow-y-auto rounded-3xl bg-[#081C13] p-6 text-center text-white space-y-5 border border-[#1E3B2D] shadow-2xl">
-            <div className="w-20 h-20 mx-auto rounded-full overflow-hidden ring-4 ring-[#0B7A4B]/50 animate-pulse">
-              <img
-                src={currentOrder.courier?.avatar}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            </div>
+      {/* Map */}
+      <div className="px-gutter-md">
+        <div className="relative rounded-lg overflow-hidden border border-light-outline dark:border-dark-outline shadow-sm">
+          <div className="h-[250px] sm:h-[320px]">
+            <ConakryMap
+              partnerLat={currentOrder.partnerLat}
+              partnerLng={currentOrder.partnerLng}
+              partnerName={currentOrder.partnerName}
+              clientLat={currentOrder.clientLat}
+              clientLng={currentOrder.clientLng}
+              clientAddress={currentOrder.clientQuartier}
+              courier={currentOrder.courier}
+              orderStatus={currentOrder.status}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Rider card */}
+      <section className="px-gutter-md">
+        <div className="p-gutter-md rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm flex items-center justify-between gap-gutter-md">
+          <div className="flex items-center gap-gutter-md">
+            <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-courier text-on-courier font-headline text-headline-md">
+              {riderInitials}
+            </span>
             <div>
-              <h3 className="font-heading font-extrabold text-lg">
-                {currentOrder.courier?.name}
-              </h3>
-              <p className="text-xs text-emerald-200/75 mt-0.5">
-                {currentOrder.courier?.phone}
+              <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">
+                {rider?.name || 'Ibrahima Sory'}
+              </h2>
+              <p className="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                Rider Soneya · {rider?.rating || 4.9} ★
               </p>
-              <div className="mt-2 text-xs text-emerald-400 font-semibold flex items-center justify-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Appel téléphonique en cours...</span>
-              </div>
             </div>
+          </div>
+          <div className="flex items-center gap-gutter-sm">
             <button
-              onClick={() => setIsCalling(false)}
-              className="w-full py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm transition cursor-pointer min-h-[46px]"
+              type="button"
+              aria-label="Appeler le livreur"
+              onClick={() => setIsCalling(!isCalling)}
+              className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors cursor-pointer ${
+                isCalling
+                  ? 'bg-error text-on-error'
+                  : 'bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary hover:opacity-90'
+              }`}
             >
-              Raccrocher
+              <span className="material-symbols-outlined text-title-md" aria-hidden="true">{isCalling ? 'call_end' : 'call'}</span>
+            </button>
+            <button
+              type="button"
+              aria-label="Messagerie"
+              onClick={() => setIsChatOpen(!isChatOpen)}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-light-surface-container dark:bg-dark-surface-container border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-title-md" aria-hidden="true">chat</span>
             </button>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* In-app Chat Modal */}
+      {/* Chat panel */}
       {isChatOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-0 sm:p-4 animate-in fade-in">
-          <div className="w-full max-w-md h-[82dvh] max-h-[90dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-white dark:bg-[#0C1913] border border-[#E2ECE7] dark:border-[#1E3B2D] shadow-2xl overflow-hidden">
-            <div className="p-4 border-b border-[#E2ECE7] dark:border-[#1E3B2D] flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img
-                  src={currentOrder.courier?.avatar}
-                  alt=""
-                  className="w-9 h-9 rounded-xl object-cover"
-                />
-                <div>
-                  <div className="font-heading font-bold text-sm text-[#0B2B1E] dark:text-white">
-                    {currentOrder.courier?.name}
-                  </div>
-                  <div className="text-[11px] text-[#0B7A4B] dark:text-emerald-400 font-semibold">
-                    En ligne
-                  </div>
+        <section className="px-gutter-md animate-fade-in">
+          <div className="p-gutter-md rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm flex flex-col gap-gutter-sm max-h-64 overflow-y-auto">
+            {chatMessages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.sender === 'client' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`px-gutter-md py-gutter-sm rounded-md max-w-[80%] ${
+                  msg.sender === 'client'
+                    ? 'bg-light-primary text-light-on-primary'
+                    : 'bg-light-surface-container dark:bg-dark-surface-container text-light-on-surface dark:text-dark-on-surface'
+                }`}>
+                  <p className="font-body text-body-sm">{msg.text}</p>
+                  <span className="font-mono text-mono-sm opacity-70 mt-1 block">{msg.time}</span>
                 </div>
               </div>
-              <button
-                onClick={() => setIsChatOpen(false)}
-                className="p-2 rounded-full text-[#5C7A6E] hover:text-[#0B2B1E] dark:hover:text-white cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-2.5 border-b border-[#E2ECE7] dark:border-[#1E3B2D] flex gap-2 overflow-x-auto no-scrollbar">
-              {[
-                'Je suis devant la porte',
-                'Montez au 1er étage',
-                'Appelez-moi à l arrivée',
-                'Merci !',
-              ].map((txt) => (
-                <button
-                  key={txt}
-                  onClick={() => {
-                    const time = new Date().toLocaleTimeString('fr-FR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    });
-                    setChatMessages((prev) => [
-                      ...prev,
-                      { sender: 'client', text: txt, time },
-                    ]);
-                  }}
-                  className="px-3 py-1.5 text-xs rounded-full bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] text-[#0B2B1E] dark:text-emerald-100 whitespace-nowrap hover:bg-[#0B7A4B] hover:text-white hover:border-[#0B7A4B] transition cursor-pointer"
-                >
-                  {txt}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex-1 p-4 overflow-y-auto space-y-3">
-              {chatMessages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex flex-col ${
-                    msg.sender === 'client' ? 'items-end' : 'items-start'
-                  }`}
-                >
-                  <div
-                    className={`max-w-[78%] p-3 rounded-2xl text-xs ${
-                      msg.sender === 'client'
-                        ? 'bg-[#0B7A4B] text-white rounded-br-xs'
-                        : 'bg-emerald-50/70 dark:bg-[#10231B] text-[#0B2B1E] dark:text-white border border-[#E2ECE7] dark:border-[#1E3B2D] rounded-bl-xs'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                  <span className="text-[10px] text-[#5C7A6E] dark:text-emerald-300/70 mt-1 px-1">
-                    {msg.time}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-3 border-t border-[#E2ECE7] dark:border-[#1E3B2D] flex items-center gap-2">
+            ))}
+            <div className="flex items-center gap-gutter-sm pt-gutter-sm border-t border-light-outline dark:border-dark-outline">
               <input
                 type="text"
-                placeholder="Écrire un message au livreur..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 px-3.5 py-2.5 text-xs rounded-xl bg-white dark:bg-[#10231B] border border-[#D4E9DD] dark:border-[#1E3B2D] focus:outline-none focus:border-[#0B7A4B] text-[#0B2B1E] dark:text-white placeholder:text-[#5C7A6E] min-h-[42px]"
+                placeholder="Votre message..."
+                className="flex-1 px-gutter-md py-2.5 rounded-md bg-light-surface-container dark:bg-dark-surface-container border border-light-outline dark:border-dark-outline font-body text-body-md text-light-on-surface dark:text-dark-on-surface focus:border-light-primary focus:outline-none"
               />
               <button
                 onClick={handleSendMessage}
-                className="w-11 h-11 rounded-xl bg-[#0B7A4B] hover:bg-[#08613B] text-white flex items-center justify-center transition cursor-pointer shrink-0"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary cursor-pointer"
               >
-                <Send className="w-4 h-4" />
+                <span className="material-symbols-outlined text-title-md" aria-hidden="true">send</span>
               </button>
             </div>
           </div>
+        </section>
+      )}
+
+      {/* Timeline */}
+      <section className="px-gutter-md">
+        <div className="p-gutter-md rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm flex flex-col gap-gutter-md">
+          <div className="flex items-center justify-between">
+            <h2 className="font-title text-title-md text-light-on-surface dark:text-dark-on-surface">Chronologie</h2>
+            <span className="font-label text-label-sm text-light-primary dark:text-dark-primary">
+              {currentOrder.status === 'delivered' ? 'Livré' : `${Math.max(3, Math.round(remainingKm * 3))} min restantes`}
+            </span>
+          </div>
+
+          {steps.map((step, idx) => {
+            const isDone = idx < currentStepIndex;
+            const isActive = idx === currentStepIndex;
+            return (
+              <div
+                key={step.key}
+                className={`flex items-center justify-between py-gutter-sm ${idx < steps.length - 1 ? 'border-b border-light-outline dark:border-dark-outline' : ''}`}
+              >
+                <div className="flex items-center gap-gutter-sm">
+                  <span
+                    className="material-symbols-outlined text-title-lg"
+                    style={isDone ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                    aria-hidden="true"
+                  >
+                    {isDone ? 'check_circle' : step.icon}
+                  </span>
+                  <div>
+                    <p className={`font-title text-title-md ${isDone || isActive ? 'text-light-on-surface dark:text-dark-on-surface' : 'text-light-on-surface-variant dark:text-dark-on-surface-variant'}`}>
+                      {step.title}
+                    </p>
+                    <p className="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                      {step.subtitle}
+                    </p>
+                  </div>
+                </div>
+                {isDone && (
+                  <span className="font-mono text-mono-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    {formatTime(currentOrder.timeline[idx]?.timestamp || currentOrder.createdAt)}
+                  </span>
+                )}
+                {isActive && currentOrder.status !== 'delivered' && (
+                  <span className="font-mono text-mono-sm text-light-primary dark:text-dark-primary animate-pulse">en cours</span>
+                )}
+              </div>
+            );
+          })}
         </div>
+      </section>
+
+      {/* Delivery code & action */}
+      {currentOrder.status !== 'delivered' && (
+        <section className="px-gutter-md">
+          <div className="p-gutter-md rounded-lg bg-light-primary-container dark:bg-dark-primary-container border border-light-outline dark:border-dark-outline flex flex-col gap-gutter-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-label text-label-sm text-light-primary dark:text-dark-primary">Code de remise secret</p>
+                <p className="font-mono text-mono-md text-light-on-primary-container dark:text-dark-on-primary-container tabular-nums text-2xl tracking-widest">
+                  {currentOrder.deliveryCode}
+                </p>
+              </div>
+              <span className="material-symbols-outlined text-headline-lg text-accent" style={{ fontVariationSettings: "'FILL' 1" }} aria-hidden="true">lock</span>
+            </div>
+
+            <div className="flex items-center gap-gutter-sm">
+              <button
+                onClick={() => setIsAutoSimulating(!isAutoSimulating)}
+                className="inline-flex items-center gap-gutter-xs px-gutter-md py-2.5 rounded-md bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline text-light-on-surface dark:text-dark-on-surface font-label text-label-md cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-title-md" aria-hidden="true">{isAutoSimulating ? 'pause' : 'play_arrow'}</span>
+                {isAutoSimulating ? 'Pause' : 'Simuler'}
+              </button>
+              <button
+                onClick={handleNextStage}
+                className="inline-flex items-center gap-gutter-xs px-gutter-md py-2.5 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-md hover:opacity-90 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-title-md" aria-hidden="true">arrow_forward</span>
+                Étape suivante
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {currentOrder.status === 'delivered' && (
+        <section className="px-gutter-md">
+          <div className="p-gutter-lg rounded-lg bg-light-surface-container-low dark:bg-dark-surface-container-low border border-light-outline dark:border-dark-outline shadow-sm flex flex-col items-center gap-gutter-md text-center">
+            <span className="material-symbols-outlined text-headline-lg text-light-primary dark:text-dark-primary" style={{ fontVariationSettings: "'FILL' 1" }} aria-hidden="true">check_circle</span>
+            <div>
+              <h2 className="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface">Commande livrée</h2>
+              <p className="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant mt-1">
+                Total payé : <span className="font-mono text-mono-md text-light-on-surface dark:text-dark-on-surface tabular-nums">{formatGnf(currentOrder.totalGnf)}</span>
+              </p>
+            </div>
+            <button
+              onClick={() => setActiveTab('home')}
+              className="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-md bg-light-primary dark:bg-dark-primary text-light-on-primary dark:text-dark-on-primary font-label text-label-lg hover:opacity-90 cursor-pointer"
+            >
+              Commander à nouveau
+            </button>
+          </div>
+        </section>
       )}
     </div>
   );
